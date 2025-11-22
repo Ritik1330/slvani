@@ -4,14 +4,17 @@ import { Button } from "@/components/ui/button";
 import type { Product } from "@/lib/data";
 import { ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
+import { useCart } from "@/lib/cart-context";
 
 interface ProductInfoProps {
 	product: Product;
 }
 
 export default function ProductInfo({ product }: ProductInfoProps) {
+	const { addItem } = useCart();
+
 	const handleAddToCart = () => {
-		toast.success(`Added ${product.title} to cart`);
+		addItem(product);
 	};
 
 	return (

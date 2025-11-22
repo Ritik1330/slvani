@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ShoppingBag, Search, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "./mode-toggle";
+import CartSheet from "@/components/store/cart-sheet";
 import UserMenu from "./user-menu";
 
 export default function Header() {
@@ -46,9 +47,7 @@ export default function Header() {
 						<Search className="h-5 w-5" />
 					</Button>
 					<UserMenu />
-					<Button variant="ghost" size="icon">
-						<ShoppingBag className="h-5 w-5" />
-					</Button>
+					<CartSheet />
 					<ModeToggle />
 				</div>
 			</div>

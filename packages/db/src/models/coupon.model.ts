@@ -68,5 +68,5 @@ couponSchema.methods.isValid = function () {
 	);
 };
 
-export const Coupon =
-	mongoose.models.Coupon || mongoose.model<ICoupon>("Coupon", couponSchema);
+export const Coupon = (mongoose.models.Coupon ||
+	mongoose.model<ICoupon>("Coupon", couponSchema)) as mongoose.Model<ICoupon>;

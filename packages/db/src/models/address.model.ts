@@ -45,5 +45,5 @@ addressSchema.pre("save", async function (next) {
 	next();
 });
 
-export const Address =
-	mongoose.models.Address || mongoose.model<IAddress>("Address", addressSchema);
+export const Address = (mongoose.models.Address ||
+	mongoose.model<IAddress>("Address", addressSchema)) as mongoose.Model<IAddress>;

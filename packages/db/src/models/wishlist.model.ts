@@ -21,6 +21,5 @@ const wishlistSchema = new Schema<IWishlist>(
 // Add index for faster lookups
 wishlistSchema.index({ userId: 1, productIds: 1 });
 
-export const Wishlist =
-	mongoose.models.Wishlist ||
-	mongoose.model<IWishlist>("Wishlist", wishlistSchema);
+export const Wishlist = (mongoose.models.Wishlist ||
+	mongoose.model<IWishlist>("Wishlist", wishlistSchema)) as mongoose.Model<IWishlist>;

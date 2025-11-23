@@ -31,5 +31,5 @@ const reviewSchema = new Schema<IReview>(
 // Prevent multiple reviews from the same user for the same product
 reviewSchema.index({ userId: 1, productId: 1 }, { unique: true });
 
-export const Review =
-	mongoose.models.Review || mongoose.model<IReview>("Review", reviewSchema);
+export const Review = (mongoose.models.Review ||
+	mongoose.model<IReview>("Review", reviewSchema)) as mongoose.Model<IReview>;

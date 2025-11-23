@@ -72,6 +72,5 @@ categorySchema.virtual("subcategories", {
 	foreignField: "parentCategory",
 });
 
-export const Category =
-	mongoose.models.Category ||
-	mongoose.model<ICategory>("Category", categorySchema);
+export const Category = (mongoose.models.Category ||
+	mongoose.model<ICategory>("Category", categorySchema)) as mongoose.Model<ICategory>;

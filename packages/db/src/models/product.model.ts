@@ -23,7 +23,7 @@ const productSchema = new mongoose.Schema<IProduct>(
 		description: { type: String, required: true },
 		coverImage: { type: String, required: true },
 		images: [{ type: String }],
-		category: { type: String, required: true },
+		category: { type: String, ref: "Category", required: true },
 		rating: {
 			rate: { type: Number, required: true },
 			count: { type: Number, required: true },

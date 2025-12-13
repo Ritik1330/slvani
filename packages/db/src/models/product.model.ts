@@ -9,10 +9,15 @@ export interface IProduct {
 	coverImage: string;
 	images: string[];
 	category: string;
+	gender: "unisex" | "men" | "women";
 	rating: {
 		rate: number;
 		count: number;
 	};
+	createdBy: string;
+	updatedBy: string;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 const productSchema = new mongoose.Schema<IProduct>(
@@ -24,10 +29,17 @@ const productSchema = new mongoose.Schema<IProduct>(
 		coverImage: { type: String, required: true },
 		images: [{ type: String }],
 		category: { type: String, ref: "Category", required: true },
+		gender: {
+			type: String,
+			enum: ["unisex", "men", "women"],
+			default: "unisex",
+		},
 		rating: {
 			rate: { type: Number, required: true },
 			count: { type: Number, required: true },
 		},
+		createdBy: { type: String, ref: "User", required: true },
+		updatedBy: { type: String, ref: "User", required: true },
 	},
 	{ timestamps: true },
 );

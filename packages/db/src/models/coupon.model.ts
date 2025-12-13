@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { generateId } from "../utils/generate-id";
 
 export interface ICoupon {
@@ -14,6 +14,8 @@ export interface ICoupon {
 	usageLimit?: number;
 	usedCount: number;
 	isActive: boolean;
+	createdBy: string;
+	updatedBy: string;
 	createdAt: Date;
 	updatedAt: Date;
 	isValid(): boolean; // Helper method
@@ -44,6 +46,8 @@ const couponSchema = new Schema<ICoupon>(
 		usageLimit: { type: Number, min: 1 }, // Total times coupon can be used
 		usedCount: { type: Number, default: 0, min: 0 },
 		isActive: { type: Boolean, default: true, index: true },
+		createdBy: { type: String, ref: "User", required: true },
+		updatedBy: { type: String, ref: "User", required: true },
 	},
 	{ timestamps: true },
 );

@@ -16,3 +16,4 @@ export * from "./models/payment.model";
 export * from "./models/product.model";
 export * from "./models/review.model";
 export * from "./models/wishlist.model";
+export * from "./models/image.model";

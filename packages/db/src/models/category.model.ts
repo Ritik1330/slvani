@@ -11,6 +11,8 @@ export interface ICategory {
 	order: number;
 	isActive: boolean;
 	subcategories?: ICategory[];
+	createdBy: string;
+	updatedBy: string;
 	createdAt: Date;
 	updatedAt: Date;
 }
@@ -57,6 +59,8 @@ const categorySchema = new Schema<ICategory>(
 			default: true,
 			index: true, // Index isActive for filtering
 		},
+		createdBy: { type: String, ref: "User", required: true },
+		updatedBy: { type: String, ref: "User", required: true },
 	},
 	{
 		timestamps: true,

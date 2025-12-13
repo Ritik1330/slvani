@@ -10,6 +10,8 @@ export interface ICart {
 	_id: string;
 	userId: string;
 	items: ICartItem[];
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 const cartItemSchema = new mongoose.Schema<ICartItem>(

@@ -26,8 +26,8 @@ const productSchema = new mongoose.Schema<IProduct>(
 		title: { type: String, required: true },
 		price: { type: Number, required: true },
 		description: { type: String, required: true },
-		coverImage: { type: String, required: true },
-		images: [{ type: String }],
+		coverImage: { type: String, ref: "Image", required: true },
+		images: [{ type: String, ref: "Image" }],
 		category: { type: String, ref: "Category", required: true },
 		gender: {
 			type: String,

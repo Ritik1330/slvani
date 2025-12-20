@@ -5,7 +5,7 @@ import { auth } from "@ecommerce/auth";
  * Authentication middleware to protect routes
  * Checks for valid session and attaches user info to context
  */
-export async function authMiddleware(c: Context, next: () => Promise<void>) {
+export async function requireAuth(c: Context, next: () => Promise<void>) {
 	try {
 		// Get session from auth handler
 		const session = await auth.api.getSession({
@@ -31,20 +31,20 @@ export async function authMiddleware(c: Context, next: () => Promise<void>) {
  * Optional auth middleware - doesn't block if not authenticated
  * Useful for routes that work differently for authenticated users
  */
-export async function optionalAuthMiddleware(c: Context, next: () => Promise<void>) {
-	try {
-		const session = await auth.api.getSession({
-			headers: c.req.raw.headers,
-		});
+// export async function optionalrequireAuth(c: Context, next: () => Promise<void>) {
+// 	try {
+// 		const session = await auth.api.getSession({
+// 			headers: c.req.raw.headers,
+// 		});
 
-		if (session) {
-			c.set("user", session.user);
-			c.set("session", session.session);
-		}
+// 		if (session) {
+// 			c.set("user", session.user);
+// 			c.set("session", session.session);
+// 		}
 
-		await next();
-	} catch (error) {
-		// Continue even if auth fails
-		await next();
-	}
-}
+// 		await next();
+// 	} catch (error) {
+// 		// Continue even if auth fails
+// 		await next();
+// 	}
+// }

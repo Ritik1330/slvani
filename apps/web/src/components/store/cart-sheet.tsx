@@ -1,18 +1,18 @@
 "use client";
 
+import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	Sheet,
 	SheetContent,
+	SheetFooter,
 	SheetHeader,
 	SheetTitle,
 	SheetTrigger,
-	SheetFooter,
 } from "@/components/ui/sheet";
 import { useCart } from "@/lib/cart-context";
-import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
-import Link from "next/link";
-import { useState } from "react";
 
 export default function CartSheet() {
 	const { items, removeItem, updateQuantity, cartTotal, cartCount } = useCart();
@@ -24,20 +24,20 @@ export default function CartSheet() {
 				<Button variant="ghost" size="icon" className="relative">
 					<ShoppingBag className="h-5 w-5" />
 					{cartCount > 0 && (
-						<span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[10px] font-bold text-primary-foreground flex items-center justify-center">
+						<span className="-top-1 -right-1 absolute flex h-4 w-4 items-center justify-center rounded-full bg-primary font-bold text-[10px] text-primary-foreground">
 							{cartCount}
 						</span>
 					)}
 				</Button>
 			</SheetTrigger>
-			<SheetContent className="flex flex-col w-full sm:max-w-lg">
+			<SheetContent className="flex w-full flex-col sm:max-w-lg">
 				<SheetHeader>
 					<SheetTitle>Shopping Cart ({cartCount})</SheetTitle>
 				</SheetHeader>
 
 				<div className="flex-1 overflow-y-auto py-6">
 					{items.length === 0 ? (
-						<div className="flex flex-col items-center justify-center h-full text-center space-y-4">
+						<div className="flex h-full flex-col items-center justify-center space-y-4 text-center">
 							<ShoppingBag className="h-12 w-12 text-muted-foreground" />
 							<p className="text-muted-foreground">Your cart is empty</p>
 							<Button variant="outline" onClick={() => setIsOpen(false)}>
@@ -58,7 +58,7 @@ export default function CartSheet() {
 
 									<div className="flex flex-1 flex-col">
 										<div>
-											<div className="flex justify-between text-base font-medium">
+											<div className="flex justify-between font-medium text-base">
 												<h3 className="line-clamp-1">
 													<Link
 														href={`/product/${item.id}`}
@@ -67,19 +67,23 @@ export default function CartSheet() {
 														{item.title}
 													</Link>
 												</h3>
-												<p className="ml-4">₹{(item.price * item.quantity).toFixed(2)}</p>
+												<p className="ml-4">
+													₹{(item.price * item.quantity).toFixed(2)}
+												</p>
 											</div>
-											<p className="mt-1 text-sm text-muted-foreground capitalize">
+											<p className="mt-1 text-muted-foreground text-sm capitalize">
 												{item.category}
 											</p>
 										</div>
 										<div className="flex flex-1 items-end justify-between text-sm">
-											<div className="flex items-center border rounded-md">
+											<div className="flex items-center rounded-md border">
 												<Button
 													variant="ghost"
 													size="icon"
 													className="h-8 w-8 rounded-none"
-													onClick={() => updateQuantity(item.id, item.quantity - 1)}
+													onClick={() =>
+														updateQuantity(item.id, item.quantity - 1)
+													}
 												>
 													<Minus className="h-3 w-3" />
 												</Button>
@@ -88,7 +92,9 @@ export default function CartSheet() {
 													variant="ghost"
 													size="icon"
 													className="h-8 w-8 rounded-none"
-													onClick={() => updateQuantity(item.id, item.quantity + 1)}
+													onClick={() =>
+														updateQuantity(item.id, item.quantity + 1)
+													}
 												>
 													<Plus className="h-3 w-3" />
 												</Button>
@@ -100,7 +106,7 @@ export default function CartSheet() {
 												className="text-destructive hover:text-destructive"
 												onClick={() => removeItem(item.id)}
 											>
-												<Trash2 className="h-4 w-4 mr-1" />
+												<Trash2 className="mr-1 h-4 w-4" />
 												Remove
 											</Button>
 										</div>
@@ -114,11 +120,11 @@ export default function CartSheet() {
 				{items.length > 0 && (
 					<SheetFooter className="border-t pt-6">
 						<div className="w-full space-y-4">
-							<div className="flex justify-between text-base font-medium">
+							<div className="flex justify-between font-medium text-base">
 								<p>Subtotal</p>
 								<p>₹{cartTotal.toFixed(2)}</p>
 							</div>
-							<p className="text-xs text-muted-foreground">
+							<p className="text-muted-foreground text-xs">
 								Shipping and taxes calculated at checkout.
 							</p>
 							<Button className="w-full" size="lg" asChild>

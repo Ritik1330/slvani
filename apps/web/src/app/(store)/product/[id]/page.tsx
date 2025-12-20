@@ -1,7 +1,7 @@
+import { notFound } from "next/navigation";
 import ProductGallery from "@/components/store/product-gallery";
 import ProductInfo from "@/components/store/product-info";
 import { products } from "@/lib/data";
-import { notFound } from "next/navigation";
 
 export default async function ProductPage({
 	params,
@@ -17,7 +17,7 @@ export default async function ProductPage({
 
 	return (
 		<div className="container mx-auto px-4 py-12">
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
+			<div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:gap-16">
 				<ProductGallery image={product.image} title={product.title} />
 				<ProductInfo product={product} />
 			</div>

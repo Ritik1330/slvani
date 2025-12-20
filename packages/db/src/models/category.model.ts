@@ -77,4 +77,7 @@ categorySchema.virtual("subcategories", {
 });
 
 export const Category = (mongoose.models.Category ||
-	mongoose.model<ICategory>("Category", categorySchema)) as mongoose.Model<ICategory>;
+	mongoose.model<ICategory>(
+		"Category",
+		categorySchema,
+	)) as mongoose.Model<ICategory>;

@@ -24,8 +24,6 @@ export const metadata: Metadata = {
 	description: "Premium Jewelry Collection",
 };
 
-
-
 // ... imports
 
 export default function RootLayout({
@@ -36,12 +34,10 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased font-sans`}
+				className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} font-sans antialiased`}
 			>
 				<Providers>
-					<CartProvider>
-						{children}
-					</CartProvider>
+					<CartProvider>{children}</CartProvider>
 				</Providers>
 			</body>
 		</html>

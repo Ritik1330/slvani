@@ -1,27 +1,36 @@
-import Link from "next/link";
 import { Facebook, Instagram, Twitter } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export default function Footer() {
 	return (
-		<footer className="bg-secondary/30 border-t">
+		<footer className="border-t bg-secondary/30">
 			<div className="container mx-auto px-4 py-12">
-				<div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+				<div className="grid grid-cols-1 gap-8 md:grid-cols-4">
 					{/* Brand */}
 					<div className="space-y-4">
-						<h3 className="font-serif text-xl font-bold">LUXE JEWELRY</h3>
-						<p className="text-sm text-muted-foreground">
+						<h3 className="font-bold font-serif text-xl">LUXE JEWELRY</h3>
+						<p className="text-muted-foreground text-sm">
 							Crafting timeless elegance for the modern soul.
 						</p>
 						<div className="flex gap-4">
-							<Link href="#" className="text-muted-foreground hover:text-primary">
+							<Link
+								href="#"
+								className="text-muted-foreground hover:text-primary"
+							>
 								<Instagram className="h-5 w-5" />
 							</Link>
-							<Link href="#" className="text-muted-foreground hover:text-primary">
+							<Link
+								href="#"
+								className="text-muted-foreground hover:text-primary"
+							>
 								<Facebook className="h-5 w-5" />
 							</Link>
-							<Link href="#" className="text-muted-foreground hover:text-primary">
+							<Link
+								href="#"
+								className="text-muted-foreground hover:text-primary"
+							>
 								<Twitter className="h-5 w-5" />
 							</Link>
 						</div>
@@ -29,15 +38,21 @@ export default function Footer() {
 
 					{/* Shop */}
 					<div>
-						<h4 className="font-medium mb-4">Shop</h4>
-						<ul className="space-y-2 text-sm text-muted-foreground">
+						<h4 className="mb-4 font-medium">Shop</h4>
+						<ul className="space-y-2 text-muted-foreground text-sm">
 							<li>
-								<Link href="/collections/necklaces" className="hover:text-primary">
+								<Link
+									href="/collections/necklaces"
+									className="hover:text-primary"
+								>
 									Necklaces
 								</Link>
 							</li>
 							<li>
-								<Link href="/collections/earrings" className="hover:text-primary">
+								<Link
+									href="/collections/earrings"
+									className="hover:text-primary"
+								>
 									Earrings
 								</Link>
 							</li>
@@ -47,7 +62,10 @@ export default function Footer() {
 								</Link>
 							</li>
 							<li>
-								<Link href="/collections/bracelets" className="hover:text-primary">
+								<Link
+									href="/collections/bracelets"
+									className="hover:text-primary"
+								>
 									Bracelets
 								</Link>
 							</li>
@@ -56,8 +74,8 @@ export default function Footer() {
 
 					{/* Support */}
 					<div>
-						<h4 className="font-medium mb-4">Support</h4>
-						<ul className="space-y-2 text-sm text-muted-foreground">
+						<h4 className="mb-4 font-medium">Support</h4>
+						<ul className="space-y-2 text-muted-foreground text-sm">
 							<li>
 								<Link href="/contact" className="hover:text-primary">
 									Contact Us
@@ -78,8 +96,8 @@ export default function Footer() {
 
 					{/* Newsletter */}
 					<div>
-						<h4 className="font-medium mb-4">Newsletter</h4>
-						<p className="text-sm text-muted-foreground mb-4">
+						<h4 className="mb-4 font-medium">Newsletter</h4>
+						<p className="mb-4 text-muted-foreground text-sm">
 							Subscribe to receive updates, access to exclusive deals, and more.
 						</p>
 						<div className="flex gap-2">
@@ -88,7 +106,7 @@ export default function Footer() {
 						</div>
 					</div>
 				</div>
-				<div className="mt-12 pt-8 border-t text-center text-sm text-muted-foreground">
+				<div className="mt-12 border-t pt-8 text-center text-muted-foreground text-sm">
 					© {new Date().getFullYear()} Luxe Jewelry. All rights reserved.
 				</div>
 			</div>

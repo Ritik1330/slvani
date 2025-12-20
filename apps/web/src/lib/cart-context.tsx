@@ -1,8 +1,8 @@
 "use client";
 
-import type { Product } from "@/lib/data";
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
+import type { Product } from "@/lib/data";
 
 export interface CartItem extends Product {
 	quantity: number;
@@ -51,7 +51,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 				return prevItems.map((item) =>
 					item.id === product.id
 						? { ...item, quantity: item.quantity + 1 }
-						: item
+						: item,
 				);
 			}
 			return [...prevItems, { ...product, quantity: 1 }];
@@ -71,8 +71,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 		}
 		setItems((prevItems) =>
 			prevItems.map((item) =>
-				item.id === productId ? { ...item, quantity } : item
-			)
+				item.id === productId ? { ...item, quantity } : item,
+			),
 		);
 	};
 
@@ -84,7 +84,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 	const cartCount = items.reduce((total, item) => total + item.quantity, 0);
 	const cartTotal = items.reduce(
 		(total, item) => total + item.price * item.quantity,
-		0
+		0,
 	);
 
 	return (

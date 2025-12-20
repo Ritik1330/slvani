@@ -1,9 +1,9 @@
 "use client";
+import { Menu, Search } from "lucide-react";
 import Link from "next/link";
-import { ShoppingBag, Search, Menu } from "lucide-react";
+import CartSheet from "@/components/store/cart-sheet";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "./mode-toggle";
-import CartSheet from "@/components/store/cart-sheet";
 import UserMenu from "./user-menu";
 
 export default function Header() {
@@ -15,14 +15,14 @@ export default function Header() {
 
 	return (
 		<header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
-			<div className="container mx-auto px-4 h-16 flex items-center justify-between">
+			<div className="container mx-auto flex h-16 items-center justify-between px-4">
 				{/* Mobile Menu Button */}
 				<Button variant="ghost" size="icon" className="md:hidden">
 					<Menu className="h-5 w-5" />
 				</Button>
 
 				{/* Desktop Navigation */}
-				<nav className="hidden md:flex items-center gap-6 text-sm font-medium">
+				<nav className="hidden items-center gap-6 font-medium text-sm md:flex">
 					{links.map(({ to, label }) => (
 						<Link
 							key={to}
@@ -35,8 +35,11 @@ export default function Header() {
 				</nav>
 
 				{/* Logo */}
-				<div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-					<Link href="/" className="font-serif text-2xl font-bold tracking-wide">
+				<div className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2">
+					<Link
+						href="/"
+						className="font-bold font-serif text-2xl tracking-wide"
+					>
 						LUXE JEWELRY
 					</Link>
 				</div>

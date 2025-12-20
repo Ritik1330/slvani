@@ -27,7 +27,13 @@ export interface IOrder {
 	subtotal: number;
 	discount: number;
 	total: number;
-	status: "pending" | "confirmed" | "processing" | "shipped" | "delivered" | "cancelled";
+	status:
+		| "pending"
+		| "confirmed"
+		| "processing"
+		| "shipped"
+		| "delivered"
+		| "cancelled";
 	paymentStatus: "pending" | "paid" | "failed" | "refunded";
 	paymentMethod: "card" | "upi" | "netbanking" | "cod";
 	shippingAddress: IOrderAddress;
@@ -73,7 +79,14 @@ const orderSchema = new Schema<IOrder>(
 		total: { type: Number, required: true, min: 0 },
 		status: {
 			type: String,
-			enum: ["pending", "confirmed", "processing", "shipped", "delivered", "cancelled"],
+			enum: [
+				"pending",
+				"confirmed",
+				"processing",
+				"shipped",
+				"delivered",
+				"cancelled",
+			],
 			default: "pending",
 			index: true,
 		},

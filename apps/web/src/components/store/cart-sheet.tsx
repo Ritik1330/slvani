@@ -12,11 +12,21 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
-import { useCart } from "@/lib/cart-context";
+import {
+	useCartQuery,
+	useCartSummary,
+	useRemoveFromCart,
+	useUpdateCart,
+} from "@/hooks/use-cart";
 
 export default function CartSheet() {
-	const { items, removeItem, updateQuantity, cartTotal, cartCount } = useCart();
+	const { data: cart, isLoading } = useCartQuery();
+	const { cartCount, cartTotal } = useCartSummary();
+	const removeFromCart = useRemoveFromCart();
+	const updateCart = useUpdateCart();
 	const [isOpen, setIsOpen] = useState(false);
+
+	const items = cart?.items || [];
 
 	return (
 		<Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -36,7 +46,11 @@ export default function CartSheet() {
 				</SheetHeader>
 
 				<div className="flex-1 overflow-y-auto py-6">
-					{items.length === 0 ? (
+					{isLoading ? (
+						<div className="flex h-full items-center justify-center">
+							<p className="text-muted-foreground">Loading cart...</p>
+						</div>
+					) : items.length === 0 ? (
 						<div className="flex h-full flex-col items-center justify-center space-y-4 text-center">
 							<ShoppingBag className="h-12 w-12 text-muted-foreground" />
 							<p className="text-muted-foreground">Your cart is empty</p>
@@ -47,13 +61,19 @@ export default function CartSheet() {
 					) : (
 						<div className="space-y-6">
 							{items.map((item) => (
-								<div key={item.id} className="flex gap-4">
-									<div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border bg-secondary/20">
-										<img
-											src={item.image}
-											alt={item.title}
-											className="h-full w-full object-cover object-center"
-										/>
+								<div key={item.productId} className="flex gap-4">
+									<div className="h-24 w-24 shrink-0 overflow-hidden rounded-md border bg-secondary/20">
+										{item.coverImage ? (
+											<img
+												src={item.coverImage}
+												alt={item.title}
+												className="h-full w-full object-cover object-center"
+											/>
+										) : (
+											<div className="flex h-full w-full items-center justify-center bg-secondary/20">
+												<ShoppingBag className="h-8 w-8 text-muted-foreground" />
+											</div>
+										)}
 									</div>
 
 									<div className="flex flex-1 flex-col">
@@ -61,14 +81,14 @@ export default function CartSheet() {
 											<div className="flex justify-between font-medium text-base">
 												<h3 className="line-clamp-1">
 													<Link
-														href={`/product/${item.id}`}
+														href={`/product/${item.productId}`}
 														onClick={() => setIsOpen(false)}
 													>
 														{item.title}
 													</Link>
 												</h3>
 												<p className="ml-4">
-													₹{(item.price * item.quantity).toFixed(2)}
+													₹{(item.price * item.quantity).toLocaleString()}
 												</p>
 											</div>
 											<p className="mt-1 text-muted-foreground text-sm capitalize">
@@ -82,8 +102,12 @@ export default function CartSheet() {
 													size="icon"
 													className="h-8 w-8 rounded-none"
 													onClick={() =>
-														updateQuantity(item.id, item.quantity - 1)
+														updateCart.mutate({
+															productId: item.productId,
+															quantity: item.quantity - 1,
+														})
 													}
+													disabled={updateCart.isPending}
 												>
 													<Minus className="h-3 w-3" />
 												</Button>
@@ -93,8 +117,12 @@ export default function CartSheet() {
 													size="icon"
 													className="h-8 w-8 rounded-none"
 													onClick={() =>
-														updateQuantity(item.id, item.quantity + 1)
+														updateCart.mutate({
+															productId: item.productId,
+															quantity: item.quantity + 1,
+														})
 													}
+													disabled={updateCart.isPending}
 												>
 													<Plus className="h-3 w-3" />
 												</Button>
@@ -104,7 +132,8 @@ export default function CartSheet() {
 												variant="ghost"
 												size="sm"
 												className="text-destructive hover:text-destructive"
-												onClick={() => removeItem(item.id)}
+												onClick={() => removeFromCart.mutate(item.productId)}
+												disabled={removeFromCart.isPending}
 											>
 												<Trash2 className="mr-1 h-4 w-4" />
 												Remove
@@ -122,7 +151,7 @@ export default function CartSheet() {
 						<div className="w-full space-y-4">
 							<div className="flex justify-between font-medium text-base">
 								<p>Subtotal</p>
-								<p>₹{cartTotal.toFixed(2)}</p>
+								<p>₹{cartTotal.toLocaleString()}</p>
 							</div>
 							<p className="text-muted-foreground text-xs">
 								Shipping and taxes calculated at checkout.

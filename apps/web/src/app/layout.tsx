@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "@/index.css";
 import Providers from "@/components/common/providers";
-import { CartProvider } from "@/lib/cart-context";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -20,11 +19,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-	title: "Luxe Jewelry",
+	title: "Slvani",
 	description: "Premium Jewelry Collection",
 };
-
-// ... imports
 
 export default function RootLayout({
 	children,
@@ -36,9 +33,7 @@ export default function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} font-sans antialiased`}
 			>
-				<Providers>
-					<CartProvider>{children}</CartProvider>
-				</Providers>
+				<Providers>{children}</Providers>
 			</body>
 		</html>
 	);

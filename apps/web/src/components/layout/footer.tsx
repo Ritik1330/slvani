@@ -10,7 +10,7 @@ export default function Footer() {
 				<div className="grid grid-cols-1 gap-8 md:grid-cols-4">
 					{/* Brand */}
 					<div className="space-y-4">
-						<h3 className="font-bold font-serif text-xl">LUXE JEWELRY</h3>
+						<h3 className="font-bold font-serif text-xl">SLVANI</h3>
 						<p className="text-muted-foreground text-sm">
 							Crafting timeless elegance for the modern soul.
 						</p>
@@ -107,7 +107,7 @@ export default function Footer() {
 					</div>
 				</div>
 				<div className="mt-12 border-t pt-8 text-center text-muted-foreground text-sm">
-					© {new Date().getFullYear()} Luxe Jewelry. All rights reserved.
+					© {new Date().getFullYear()} Slvani. All rights reserved.
 				</div>
 			</div>
 		</footer>

@@ -43,20 +43,23 @@ export function requireAdmin(c: Context, next: () => Promise<void>) {
 /**
  * Check if user is admin
  */
-export function isAdmin(user: any): boolean {
+export function isAdmin(user: User | null): boolean {
 	return user?.role === UserRole.ADMIN;
 }
 
 /**
  * Check if user owns a resource
  */
-export function isOwner(user: any, resourceUserId: string): boolean {
+export function isOwner(user: User | null, resourceUserId: string): boolean {
 	return user?.id === resourceUserId;
 }
 
 /**
  * Check if user can access resource (admin or owner)
  */
-export function canAccessResource(user: any, resourceUserId: string): boolean {
+export function canAccessResource(
+	user: User | null,
+	resourceUserId: string,
+): boolean {
 	return isAdmin(user) || isOwner(user, resourceUserId);
 }

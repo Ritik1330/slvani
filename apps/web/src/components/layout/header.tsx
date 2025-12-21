@@ -40,7 +40,7 @@ export default function Header() {
 						href="/"
 						className="font-bold font-serif text-2xl tracking-wide"
 					>
-						LUXE JEWELRY
+						SLVANI
 					</Link>
 				</div>
 

@@ -3,24 +3,30 @@
 import { ShoppingBag } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { useCart } from "@/lib/cart-context";
-import type { Product } from "@/lib/data";
+import { useAddToCart } from "@/hooks/use-cart";
+import type { Product } from "@/types";
 
 interface ProductInfoProps {
 	product: Product;
 }
 
 export default function ProductInfo({ product }: ProductInfoProps) {
-	const { addItem } = useCart();
+	const addToCart = useAddToCart();
 	const router = useRouter();
 
 	const handleAddToCart = () => {
-		addItem(product);
+		addToCart.mutate({ productId: product._id, quantity: 1 });
 	};
 
 	const handleBuyNow = () => {
-		addItem(product);
-		router.push("/checkout");
+		addToCart.mutate(
+			{ productId: product._id, quantity: 1 },
+			{
+				onSuccess: () => {
+					router.push("/checkout");
+				},
+			},
+		);
 	};
 
 	return (
@@ -30,7 +36,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
 					{product.title}
 				</h1>
 				<p className="mt-2 font-medium text-primary text-xl">
-					₹{product.price.toFixed(2)}
+					₹{product.price.toLocaleString()}
 				</p>
 			</div>
 
@@ -44,6 +50,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
 						size="lg"
 						className="flex-1 md:flex-none"
 						onClick={handleAddToCart}
+						disabled={addToCart.isPending}
 					>
 						<ShoppingBag className="mr-2 h-5 w-5" />
 						Add to Cart
@@ -53,12 +60,13 @@ export default function ProductInfo({ product }: ProductInfoProps) {
 						variant="secondary"
 						className="flex-1 md:flex-none"
 						onClick={handleBuyNow}
+						disabled={addToCart.isPending}
 					>
 						Buy Now
 					</Button>
 				</div>
 				<p className="text-center text-muted-foreground text-xs md:text-left">
-					Free shipping on all orders over $500.
+					Free shipping on all orders over ₹500.
 				</p>
 			</div>
 		</div>

@@ -8,12 +8,16 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useCart } from "@/lib/cart-context";
+import { useCartQuery, useCartSummary, useClearCart } from "@/hooks/use-cart";
 
 export default function CheckoutPage() {
-	const { items, cartTotal, clearCart } = useCart();
+	const { data: cart, isLoading } = useCartQuery();
+	const { cartTotal } = useCartSummary();
+	const clearCart = useClearCart();
 	const [isProcessing, setIsProcessing] = useState(false);
 	const router = useRouter();
+
+	const items = cart?.items || [];
 
 	const handleCheckout = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -23,10 +27,19 @@ export default function CheckoutPage() {
 		await new Promise((resolve) => setTimeout(resolve, 2000));
 
 		setIsProcessing(false);
-		clearCart();
+		clearCart.mutate();
 		toast.success("Order placed successfully!");
 		router.push("/");
 	};
+
+	if (isLoading) {
+		return (
+			<div className="container mx-auto px-4 py-24 text-center">
+				<Loader2 className="mx-auto h-8 w-8 animate-spin text-muted-foreground" />
+				<p className="mt-4 text-muted-foreground">Loading cart...</p>
+			</div>
+		);
+	}
 
 	if (items.length === 0) {
 		return (
@@ -106,7 +119,7 @@ export default function CheckoutPage() {
 											Processing...
 										</>
 									) : (
-										`Pay ₹${cartTotal.toFixed(2)}`
+										`Pay ₹${cartTotal.toLocaleString()}`
 									)}
 								</Button>
 							</div>
@@ -120,10 +133,10 @@ export default function CheckoutPage() {
 						<h2 className="mb-6 font-semibold text-xl">Order Summary</h2>
 						<div className="mb-6 space-y-4">
 							{items.map((item) => (
-								<div key={item.id} className="flex gap-4">
-									<div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border bg-secondary/20">
+								<div key={item.productId} className="flex gap-4">
+									<div className="h-16 w-16 shrink-0 overflow-hidden rounded-md border bg-secondary/20">
 										<img
-											src={item.image}
+											src={item.coverImage}
 											alt={item.title}
 											className="h-full w-full object-cover"
 										/>
@@ -137,7 +150,7 @@ export default function CheckoutPage() {
 										</p>
 									</div>
 									<p className="font-medium text-sm">
-										₹{(item.price * item.quantity).toFixed(2)}
+										₹{(item.price * item.quantity).toLocaleString()}
 									</p>
 								</div>
 							))}
@@ -146,7 +159,7 @@ export default function CheckoutPage() {
 						<div className="space-y-2 border-t pt-4">
 							<div className="flex justify-between text-sm">
 								<span className="text-muted-foreground">Subtotal</span>
-								<span>₹{cartTotal.toFixed(2)}</span>
+								<span>₹{cartTotal.toLocaleString()}</span>
 							</div>
 							<div className="flex justify-between text-sm">
 								<span className="text-muted-foreground">Shipping</span>
@@ -154,7 +167,7 @@ export default function CheckoutPage() {
 							</div>
 							<div className="mt-2 flex justify-between border-t pt-2 font-bold text-lg">
 								<span>Total</span>
-								<span>₹{cartTotal.toFixed(2)}</span>
+								<span>₹{cartTotal.toLocaleString()}</span>
 							</div>
 						</div>
 					</div>

@@ -46,7 +46,10 @@ app.post(
 	requireAdmin,
 	zValidator("json", createCategoryBodySchema),
 	async (c) => {
-		const user = c.get("user")!; // requireAuth ensures user exists
+		const user = c.get("user");
+		if (!user) {
+			throw new HTTPException(401, { message: "Unauthorized" });
+		}
 		const body = c.req.valid("json");
 		const category = await Category.create({
 			...body,
@@ -65,7 +68,10 @@ app.put(
 	zValidator("param", getCategoryParamsSchema),
 	zValidator("json", updateCategoryBodySchema),
 	async (c) => {
-		const user = c.get("user")!; // requireAuth ensures user exists
+		const user = c.get("user");
+		if (!user) {
+			throw new HTTPException(401, { message: "Unauthorized" });
+		}
 		const { id } = c.req.valid("param");
 		const body = c.req.valid("json");
 

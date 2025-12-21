@@ -1,4 +1,5 @@
 import type { Context } from "hono";
+import { HTTPException } from "hono/http-exception";
 
 /**
  * User roles for authorization
@@ -11,31 +12,21 @@ export enum UserRole {
 
 /**
  * Role-based authorization middleware
- * Checks if user has required role(s)
- * 
- * @param allowedRoles - Array of roles that can access the route
  */
 export function requireRole(...allowedRoles: UserRole[]) {
 	return async (c: Context, next: () => Promise<void>) => {
 		const user = c.get("user");
 
 		if (!user) {
-			return c.json({ error: "Unauthorized - No user found" }, 401);
+			throw new HTTPException(401, { message: "Unauthorized - No user found" });
 		}
 
-		// Get user role (default to USER if not specified)
 		const userRole = (user.role as UserRole) || UserRole.USER;
 
-		// Check if user has required role
 		if (!allowedRoles.includes(userRole)) {
-			return c.json(
-				{
-					error: "Forbidden - Insufficient permissions",
-					required: allowedRoles,
-					current: userRole,
-				},
-				403
-			);
+			throw new HTTPException(403, {
+				message: `Forbidden - Required role: ${allowedRoles.join(" or ")}`,
+			});
 		}
 
 		await next();
@@ -44,7 +35,6 @@ export function requireRole(...allowedRoles: UserRole[]) {
 
 /**
  * Admin-only middleware
- * Shorthand for requireRole(UserRole.ADMIN)
  */
 export function requireAdmin(c: Context, next: () => Promise<void>) {
 	return requireRole(UserRole.ADMIN)(c, next);
@@ -59,16 +49,13 @@ export function isAdmin(user: any): boolean {
 
 /**
  * Check if user owns a resource
- * 
- * @param user - Current user
- * @param resourceUserId - User ID of the resource owner
  */
 export function isOwner(user: any, resourceUserId: string): boolean {
 	return user?.id === resourceUserId;
 }
 
 /**
- * Check if user is admin or owns the resource
+ * Check if user can access resource (admin or owner)
  */
 export function canAccessResource(user: any, resourceUserId: string): boolean {
 	return isAdmin(user) || isOwner(user, resourceUserId);

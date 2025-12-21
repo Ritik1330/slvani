@@ -1,5 +1,6 @@
-import type { Context } from "hono";
 import { auth } from "@ecommerce/auth";
+import type { Context } from "hono";
+import { HTTPException } from "hono/http-exception";
 
 /**
  * Authentication middleware to protect routes
@@ -13,7 +14,7 @@ export async function requireAuth(c: Context, next: () => Promise<void>) {
 		});
 
 		if (!session) {
-			return c.json({ error: "Unauthorized" }, 401);
+			throw new HTTPException(401, { message: "Unauthorized" });
 		}
 
 		// Attach user info to context
@@ -22,29 +23,10 @@ export async function requireAuth(c: Context, next: () => Promise<void>) {
 
 		await next();
 	} catch (error) {
+		if (error instanceof HTTPException) {
+			throw error;
+		}
 		console.error("Auth middleware error:", error);
-		return c.json({ error: "Unauthorized" }, 401);
+		throw new HTTPException(401, { message: "Unauthorized" });
 	}
 }
-
-/**
- * Optional auth middleware - doesn't block if not authenticated
- * Useful for routes that work differently for authenticated users
- */
-// export async function optionalrequireAuth(c: Context, next: () => Promise<void>) {
-// 	try {
-// 		const session = await auth.api.getSession({
-// 			headers: c.req.raw.headers,
-// 		});
-
-// 		if (session) {
-// 			c.set("user", session.user);
-// 			c.set("session", session.session);
-// 		}
-
-// 		await next();
-// 	} catch (error) {
-// 		// Continue even if auth fails
-// 		await next();
-// 	}
-// }

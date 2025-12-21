@@ -20,18 +20,53 @@ const app = new Hono<{ Variables: Variables }>();
 // All cart routes require authentication
 app.use("*", requireAuth);
 
+// Helper function to populate cart with product details
+async function populateCartWithProducts(cart: any) {
+	const populatedItems = await Promise.all(
+		cart.items.map(async (item: any) => {
+			const product = await Product.findById(item.productId)
+				.populate("coverImage")
+				.populate("category");
+
+			// Extract values from populated fields
+			const coverImage =
+				typeof product?.coverImage === "string"
+					? product.coverImage
+					: product?.coverImage?.url || "";
+
+			const category =
+				typeof product?.category === "string"
+					? product.category
+					: product?.category?.name || "";
+
+			return {
+				productId: item.productId,
+				quantity: item.quantity,
+				price: product?.price || 0,
+				title: product?.title || "Unknown Product",
+				coverImage,
+				category,
+			};
+		}),
+	);
+
+	return {
+		...cart.toObject(),
+		items: populatedItems,
+	};
+}
+
 // Get user's cart
 app.get("/", async (c) => {
 	const user = c.get("user");
-	let cart = await Cart.findOne({ userId: user.id }).populate(
-		"items.productId",
-	);
+	let cart = await Cart.findOne({ userId: user.id });
 
 	if (!cart) {
 		cart = await Cart.create({ userId: user.id, items: [] });
 	}
 
-	return c.json(cart);
+	const populatedCart = await populateCartWithProducts(cart);
+	return c.json(populatedCart);
 });
 
 // Add item to cart
@@ -69,8 +104,8 @@ app.post("/add", zValidator("json", addToCartBodySchema), async (c) => {
 	}
 
 	// Return populated cart
-	await cart.populate("items.productId");
-	return c.json(cart);
+	const populatedCart = await populateCartWithProducts(cart);
+	return c.json(populatedCart);
 });
 
 // Remove item from cart
@@ -89,8 +124,8 @@ app.post("/remove", zValidator("json", removeFromCartBodySchema), async (c) => {
 	await cart.save();
 
 	// Return populated cart
-	await cart.populate("items.productId");
-	return c.json(cart);
+	const populatedCart = await populateCartWithProducts(cart);
+	return c.json(populatedCart);
 });
 
 // Update item quantity
@@ -124,8 +159,8 @@ app.post("/update", zValidator("json", updateCartBodySchema), async (c) => {
 	}
 
 	await cart.save();
-	await cart.populate("items.productId");
-	return c.json(cart);
+	const populatedCart = await populateCartWithProducts(cart);
+	return c.json(populatedCart);
 });
 
 // Clear cart

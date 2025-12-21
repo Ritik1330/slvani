@@ -158,6 +158,9 @@ app.post("/seed", async (c) => {
 		});
 	}
 
+	// Use a system user ID for seeding
+	const systemUserId = "system";
+
 	// Drop collection to clear any conflicting indexes
 	try {
 		await Product.collection.drop();
@@ -178,13 +181,29 @@ app.post("/seed", async (c) => {
 			name: "Necklaces",
 			slug: "necklaces",
 			description: "Beautiful necklaces",
+			createdBy: systemUserId,
+			updatedBy: systemUserId,
 		},
-		{ name: "Rings", slug: "rings", description: "Elegant rings" },
-		{ name: "Earrings", slug: "earrings", description: "Stunning earrings" },
+		{
+			name: "Rings",
+			slug: "rings",
+			description: "Elegant rings",
+			createdBy: systemUserId,
+			updatedBy: systemUserId,
+		},
+		{
+			name: "Earrings",
+			slug: "earrings",
+			description: "Stunning earrings",
+			createdBy: systemUserId,
+			updatedBy: systemUserId,
+		},
 		{
 			name: "Bracelets",
 			slug: "bracelets",
 			description: "Charming bracelets",
+			createdBy: systemUserId,
+			updatedBy: systemUserId,
 		},
 	]);
 
@@ -204,6 +223,8 @@ app.post("/seed", async (c) => {
 			description:
 				"A stunning gold necklace that captures the essence of elegance.",
 			rating: { rate: 4.8, count: 120 },
+			createdBy: systemUserId,
+			updatedBy: systemUserId,
 		},
 		{
 			title: "Diamond Solitaire Ring",
@@ -214,6 +235,8 @@ app.post("/seed", async (c) => {
 			description:
 				"A classic diamond solitaire ring, perfect for special occasions.",
 			rating: { rate: 4.9, count: 85 },
+			createdBy: systemUserId,
+			updatedBy: systemUserId,
 		},
 		{
 			title: "Pearl Drop Earrings",
@@ -224,6 +247,8 @@ app.post("/seed", async (c) => {
 			description:
 				"Elegant pearl drop earrings that add a touch of sophistication.",
 			rating: { rate: 4.7, count: 200 },
+			createdBy: systemUserId,
+			updatedBy: systemUserId,
 		},
 		{
 			title: "Gold Cuff Bracelet",
@@ -233,6 +258,8 @@ app.post("/seed", async (c) => {
 			category: categoryMap.bracelets,
 			description: "A bold gold cuff bracelet that makes a statement.",
 			rating: { rate: 4.6, count: 150 },
+			createdBy: systemUserId,
+			updatedBy: systemUserId,
 		},
 	];
 

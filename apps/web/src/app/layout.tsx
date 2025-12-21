@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
-import "../index.css";
+import "@/index.css";
 import Providers from "@/components/common/providers";
 import { CartProvider } from "@/lib/cart-context";
 

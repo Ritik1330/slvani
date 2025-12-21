@@ -24,7 +24,7 @@ export default function CartSheet() {
 				<Button variant="ghost" size="icon" className="relative">
 					<ShoppingBag className="h-5 w-5" />
 					{cartCount > 0 && (
-						<span className="-top-1 -right-1 absolute flex h-4 w-4 items-center justify-center rounded-full bg-primary font-bold text-[10px] text-primary-foreground">
+						<span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary font-bold text-[10px] text-primary-foreground">
 							{cartCount}
 						</span>
 					)}

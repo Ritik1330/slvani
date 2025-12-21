@@ -35,7 +35,7 @@ export default function Header() {
 				</nav>
 
 				{/* Logo */}
-				<div className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2">
+				<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
 					<Link
 						href="/"
 						className="font-bold font-serif text-2xl tracking-wide"

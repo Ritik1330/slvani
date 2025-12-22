@@ -35,8 +35,8 @@ const productSchema = new mongoose.Schema<IProduct>(
 			default: "unisex",
 		},
 		rating: {
-			rate: { type: Number, required: true },
-			count: { type: Number, required: true },
+			rate: { type: Number, default: 0 },
+			count: { type: Number, default: 0 },
 		},
 		createdBy: { type: String, ref: "User", required: true },
 		updatedBy: { type: String, ref: "User", required: true },

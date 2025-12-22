@@ -3,6 +3,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Check, Copy, Image as ImageIcon, Upload, X } from "lucide-react";
 import Image from "next/image";
+import * as React from "react";
 import { useId, useState } from "react";
 import { toast } from "sonner";
 
@@ -48,9 +49,59 @@ export function ImageUploadField({
 	const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
 	const [copiedId, setCopiedId] = useState<string | null>(null);
 	const [isUploading, setIsUploading] = useState(false);
+	const [loadedImageUrl, setLoadedImageUrl] = useState<string | null>(null);
 
 	const imageInputId = useId();
 	const titleInputId = useId();
+
+	// Helper function to check if value is an image ID or URL
+	const isImageId = React.useCallback((val: string) => {
+		if (!val || !val.trim()) return false;
+		// If it's a URL, return false
+		if (val.startsWith("http://") || val.startsWith("https://")) return false;
+		// Otherwise assume it's an ID
+		return true;
+	}, []);
+
+	// Helper function to check if URL is a valid image URL
+	const isValidImageUrl = React.useCallback((url: string) => {
+		if (!url || !url.trim()) return false;
+		try {
+			const urlObj = new URL(url);
+			const pathname = urlObj.pathname.toLowerCase();
+			return (
+				/\.(jpg|jpeg|png|gif|webp|svg|bmp|ico)(\?.*)?$/i.test(pathname) ||
+				url.includes("image") ||
+				url.includes("img") ||
+				url.includes("cloudinary")
+			);
+		} catch {
+			return false;
+		}
+	}, []);
+
+	// Fetch image URL if value is an ID
+	React.useEffect(() => {
+		const fetchImageUrl = async () => {
+			if (value && isImageId(value)) {
+				try {
+					const response = await adminApiClient.getImages({ limit: 1000 });
+					const image = response.data.find((img) => img._id === value);
+					if (image) {
+						setLoadedImageUrl(image.url);
+					}
+				} catch (error) {
+					console.error("Failed to fetch image:", error);
+				}
+			} else if (value && isValidImageUrl(value)) {
+				setLoadedImageUrl(value);
+			} else {
+				setLoadedImageUrl(null);
+			}
+		};
+
+		fetchImageUrl();
+	}, [value, isImageId, isValidImageUrl]);
 
 	const createImageMutation = useMutation({
 		mutationFn: adminApiClient.createImage.bind(adminApiClient),
@@ -181,23 +232,6 @@ export function ImageUploadField({
 		setDialogOpen(false);
 	};
 
-	// Helper function to check if URL is a valid image URL
-	const isValidImageUrl = (url: string) => {
-		if (!url || !url.trim()) return false;
-		try {
-			const urlObj = new URL(url);
-			const pathname = urlObj.pathname.toLowerCase();
-			return (
-				/\.(jpg|jpeg|png|gif|webp|svg|bmp|ico)(\?.*)?$/i.test(pathname) ||
-				url.includes("image") ||
-				url.includes("img") ||
-				url.includes("cloudinary")
-			);
-		} catch {
-			return false;
-		}
-	};
-
 	return (
 		<>
 			<div className="space-y-3">
@@ -218,17 +252,22 @@ export function ImageUploadField({
 				</div>
 
 				{/* Image Preview */}
-				{value && isValidImageUrl(value) && (
+				{loadedImageUrl && (
 					<div className="relative h-32 w-full overflow-hidden rounded-lg border bg-muted">
 						<Image
-							src={value}
+							src={loadedImageUrl}
 							alt="Image preview"
 							fill
 							className="object-contain"
 							onError={() => {
-								// Handle image load error silently
+								setLoadedImageUrl(null);
 							}}
 						/>
+					</div>
+				)}
+				{value && !loadedImageUrl && (
+					<div className="rounded-lg border bg-muted p-4 text-center text-muted-foreground text-sm">
+						Image ID: {value}
 					</div>
 				)}
 			</div>

@@ -7,6 +7,7 @@ import {
 	LayoutGrid,
 	LifeBuoy,
 	Map as MapIcon,
+	Package,
 	PieChart,
 	Send,
 	Ticket,
@@ -45,6 +46,21 @@ const data = {
 				{
 					title: "Add New",
 					url: "/dashboard/categories/new",
+				},
+			],
+		},
+		{
+			title: "Products",
+			url: "/dashboard/products",
+			icon: Package,
+			items: [
+				{
+					title: "All Products",
+					url: "/dashboard/products",
+				},
+				{
+					title: "Add New",
+					url: "/dashboard/products/new",
 				},
 			],
 		},

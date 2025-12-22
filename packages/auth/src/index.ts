@@ -1,6 +1,7 @@
 import { client } from "@ecommerce/db";
 import { type BetterAuthOptions, betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
+import { admin } from "better-auth/plugins";
 
 export const auth = betterAuth<BetterAuthOptions>({
 	database: mongodbAdapter(client),
@@ -15,4 +16,5 @@ export const auth = betterAuth<BetterAuthOptions>({
 			httpOnly: true,
 		},
 	},
+	plugins: [admin()],
 });

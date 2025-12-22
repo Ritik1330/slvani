@@ -275,7 +275,7 @@ class AdminApiClient extends ApiClient {
 		slug: string;
 		description?: string;
 		parentCategory?: string;
-		order?: number;
+		coverImage?: string;
 		isActive?: boolean;
 	}): Promise<Category> {
 		return this.request("/api/categories", {
@@ -297,6 +297,22 @@ class AdminApiClient extends ApiClient {
 	async deleteCategory(id: string): Promise<{ message: string }> {
 		return this.request(`/api/categories/${id}`, {
 			method: "DELETE",
+		});
+	}
+
+	async getCategory(id: string): Promise<Category> {
+		return this.request(`/api/categories/${id}`);
+	}
+
+	async reorderCategories(
+		updates: {
+			id: string;
+			displayOrder: number;
+		}[],
+	): Promise<{ message: string }> {
+		return this.request("/api/categories/reorder", {
+			method: "POST",
+			body: JSON.stringify({ updates }),
 		});
 	}
 

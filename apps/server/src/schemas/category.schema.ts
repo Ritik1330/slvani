@@ -14,7 +14,6 @@ export const createCategoryBodySchema = z.object({
 	description: z.string().trim().optional(),
 	parentCategory: z.string().optional(),
 	coverImage: z.string().url("Cover image must be a valid URL").optional(),
-	order: z.number().int().min(0).default(0),
 	isActive: z.boolean().default(true),
 });
 

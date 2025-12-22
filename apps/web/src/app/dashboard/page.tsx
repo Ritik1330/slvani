@@ -1,25 +1,12 @@
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
-import Dashboard from "./dashboard";
-
-export default async function DashboardPage() {
-	const session = await authClient.getSession({
-		fetchOptions: {
-			headers: await headers(),
-			throw: true,
-		},
-	});
-
-	if (!session?.user) {
-		redirect("/login");
-	}
-
+export default function Page() {
 	return (
-		<div>
-			<h1>Dashboard</h1>
-			<p>Welcome {session.user.name}</p>
-			<Dashboard session={session} />
+		<div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+			<div className="grid auto-rows-min gap-4 md:grid-cols-3">
+				<div className="aspect-video rounded-xl bg-muted/50" />
+				<div className="aspect-video rounded-xl bg-muted/50" />
+				<div className="aspect-video rounded-xl bg-muted/50" />
+			</div>
+			<div className="min-h-screen flex-1 rounded-xl bg-muted/50 md:min-h-min" />
 		</div>
 	);
 }

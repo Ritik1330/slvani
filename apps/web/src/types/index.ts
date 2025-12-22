@@ -7,6 +7,7 @@ import type {
 	IOrder,
 	IOrderAddress,
 	IOrderItem,
+	IPayment,
 	IProduct,
 	IReview,
 	IWishlist,
@@ -59,6 +60,9 @@ export type Wishlist = DateToString<IWishlist>;
 
 // Coupon Types
 export type Coupon = DateToString<Omit<ICoupon, "isValid">>;
+
+// Payment Types
+export type Payment = DateToString<IPayment>;
 
 // API Response Types
 export interface PaginatedResponse<T> {

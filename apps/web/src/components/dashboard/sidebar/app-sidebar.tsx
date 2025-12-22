@@ -2,6 +2,7 @@
 
 import {
 	Command,
+	CreditCard,
 	Frame,
 	Heart,
 	Image as ImageIcon,
@@ -90,6 +91,17 @@ const data = {
 				{
 					title: "All Orders",
 					url: "/dashboard/orders",
+				},
+			],
+		},
+		{
+			title: "Payments",
+			url: "/dashboard/payments",
+			icon: CreditCard,
+			items: [
+				{
+					title: "All Payments",
+					url: "/dashboard/payments",
 				},
 			],
 		},

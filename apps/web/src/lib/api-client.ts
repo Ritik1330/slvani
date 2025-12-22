@@ -6,6 +6,7 @@ import type {
 	Coupon,
 	Order,
 	PaginatedResponse,
+	Payment,
 	Product,
 	Review,
 	Wishlist,
@@ -419,6 +420,27 @@ class AdminApiClient extends ApiClient {
 		const queryString = queryParams.toString();
 		return this.request(
 			`/api/wishlist/admin/all${queryString ? `?${queryString}` : ""}`,
+		);
+	}
+
+	// Payment Management
+	async getAllPayments(params?: {
+		limit?: number;
+		skip?: number;
+		status?: "pending" | "success" | "failed" | "refunded";
+		method?: "card" | "upi" | "netbanking" | "cod";
+		orderId?: string;
+	}): Promise<Payment[]> {
+		const queryParams = new URLSearchParams();
+		if (params?.limit) queryParams.append("limit", params.limit.toString());
+		if (params?.skip) queryParams.append("skip", params.skip.toString());
+		if (params?.status) queryParams.append("status", params.status);
+		if (params?.method) queryParams.append("method", params.method);
+		if (params?.orderId) queryParams.append("orderId", params.orderId);
+
+		const queryString = queryParams.toString();
+		return this.request(
+			`/api/payments/admin/all${queryString ? `?${queryString}` : ""}`,
 		);
 	}
 

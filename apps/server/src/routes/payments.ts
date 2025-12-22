@@ -3,8 +3,10 @@ import { zValidator } from "@hono/zod-validator";
 import type { Session, User } from "better-auth/types";
 import { Hono } from "hono";
 import { requireAuth } from "@/middleware/authentication.middleware";
+import { requireAdmin } from "@/middleware/authorization.middleware";
 import {
 	createPaymentIntentBodySchema,
+	getPaymentsQuerySchema,
 	paymentWebhookBodySchema,
 } from "@/schemas/payment.schema";
 
@@ -14,6 +16,41 @@ type Variables = {
 };
 
 const app = new Hono<{ Variables: Variables }>();
+
+// Get all payments (Admin only)
+app.get(
+	"/admin/all",
+	requireAuth,
+	requireAdmin,
+	zValidator("query", getPaymentsQuerySchema),
+	async (c) => {
+		const query = c.req.valid("query");
+
+		const filter: any = {};
+
+		if (query.status) {
+			filter.status = query.status;
+		}
+
+		if (query.method) {
+			filter.method = query.method;
+		}
+
+		if (query.orderId) {
+			filter.orderId = query.orderId;
+		}
+
+		const limit = query.limit || 10;
+		const skip = query.skip || 0;
+
+		const payments = await Payment.find(filter)
+			.sort({ createdAt: -1 })
+			.limit(limit)
+			.skip(skip);
+
+		return c.json(payments);
+	},
+);
 
 // Create payment intent (Auth required)
 app.post(

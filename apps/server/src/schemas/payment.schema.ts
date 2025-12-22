@@ -11,6 +11,19 @@ export const createPaymentIntentBodySchema = z.object({
 		.default("card"),
 });
 
+// Schema for query parameters when getting payments (admin)
+export const getPaymentsQuerySchema = z.object({
+	status: z.enum(["pending", "success", "failed", "refunded"]).optional(),
+	method: z.enum(["card", "upi", "netbanking", "cod"]).optional(),
+	orderId: z.string().optional(),
+	limit: z
+		.string()
+		.transform(Number)
+		.pipe(z.number().int().positive())
+		.optional(),
+	skip: z.string().transform(Number).pipe(z.number().int().min(0)).optional(),
+});
+
 // Schema for webhook payload (basic validation)
 export const paymentWebhookBodySchema = z
 	.object({

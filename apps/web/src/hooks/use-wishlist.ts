@@ -21,10 +21,13 @@ export function useWishlistQuery() {
 }
 
 // Get all wishlists query (admin only)
-export function useAdminWishlistsQuery() {
+export function useAdminWishlistsQuery(params?: {
+	limit?: number;
+	skip?: number;
+}) {
 	return useQuery({
-		queryKey: wishlistKeys.admin(),
-		queryFn: () => adminApiClient.getAllWishlists(),
+		queryKey: [...wishlistKeys.admin(), params],
+		queryFn: () => adminApiClient.getAllWishlists(params),
 		staleTime: 1 * 60 * 1000, // 1 minute
 	});
 }

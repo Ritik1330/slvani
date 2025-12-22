@@ -1,12 +1,19 @@
 "use client";
 
 import { Heart } from "lucide-react";
+import * as React from "react";
 import { useAdminWishlistsQuery } from "@/hooks/use-wishlist";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
 export default function WishlistPage() {
-	const { data: wishlists, isLoading } = useAdminWishlistsQuery();
+	const [pageSize, setPageSize] = React.useState(10);
+	const [pageIndex, setPageIndex] = React.useState(0);
+
+	const { data: wishlists, isLoading } = useAdminWishlistsQuery({
+		limit: pageSize,
+		skip: pageIndex * pageSize,
+	});
 
 	if (isLoading) {
 		return (
@@ -33,7 +40,14 @@ export default function WishlistPage() {
 				</div>
 			</div>
 
-			<DataTable columns={columns} data={wishlists || []} />
+			<DataTable
+				columns={columns}
+				data={wishlists || []}
+				pageSize={pageSize}
+				pageIndex={pageIndex}
+				onPageSizeChange={setPageSize}
+				onPageIndexChange={setPageIndex}
+			/>
 		</div>
 	);
 }

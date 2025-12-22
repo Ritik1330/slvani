@@ -9,7 +9,15 @@ import {
 	useReactTable,
 } from "@tanstack/react-table";
 import * as React from "react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import {
 	Table,
 	TableBody,
@@ -22,11 +30,19 @@ import {
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
+	pageSize: number;
+	pageIndex: number;
+	onPageSizeChange: (size: number) => void;
+	onPageIndexChange: (index: number) => void;
 }
 
 export function DataTable<TData, TValue>({
 	columns,
 	data,
+	pageSize: externalPageSize,
+	pageIndex: externalPageIndex,
+	onPageSizeChange,
+	onPageIndexChange,
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = React.useState<SortingState>([]);
 	const [globalFilter, setGlobalFilter] = React.useState("");
@@ -38,9 +54,15 @@ export function DataTable<TData, TValue>({
 		onSortingChange: setSorting,
 		getSortedRowModel: getSortedRowModel(),
 		onGlobalFilterChange: setGlobalFilter,
+		manualPagination: true,
+		pageCount: -1,
 		state: {
 			sorting,
 			globalFilter,
+			pagination: {
+				pageIndex: externalPageIndex,
+				pageSize: externalPageSize,
+			},
 		},
 	});
 
@@ -53,6 +75,24 @@ export function DataTable<TData, TValue>({
 					onChange={(event) => setGlobalFilter(event.target.value)}
 					className="max-w-sm"
 				/>
+				<Select
+					value={String(externalPageSize)}
+					onValueChange={(value) => {
+						onPageSizeChange(Number(value));
+						onPageIndexChange(0); // Reset to first page
+					}}
+				>
+					<SelectTrigger className="w-[130px]">
+						<SelectValue />
+					</SelectTrigger>
+					<SelectContent>
+						<SelectItem value="10">10 per page</SelectItem>
+						<SelectItem value="20">20 per page</SelectItem>
+						<SelectItem value="50">50 per page</SelectItem>
+						<SelectItem value="100">100 per page</SelectItem>
+						<SelectItem value="500">500 per page</SelectItem>
+					</SelectContent>
+				</Select>
 			</div>
 			<div className="rounded-md border">
 				<Table>
@@ -103,6 +143,30 @@ export function DataTable<TData, TValue>({
 						)}
 					</TableBody>
 				</Table>
+			</div>
+			<div className="flex items-center justify-between py-4">
+				<div className="text-muted-foreground text-sm">
+					Showing {externalPageIndex * externalPageSize + 1} to{" "}
+					{externalPageIndex * externalPageSize + data.length} results
+				</div>
+				<div className="flex items-center space-x-2">
+					<Button
+						variant="outline"
+						size="sm"
+						onClick={() => onPageIndexChange(externalPageIndex - 1)}
+						disabled={externalPageIndex === 0}
+					>
+						Previous
+					</Button>
+					<Button
+						variant="outline"
+						size="sm"
+						onClick={() => onPageIndexChange(externalPageIndex + 1)}
+						disabled={data.length < externalPageSize}
+					>
+						Next
+					</Button>
+				</div>
 			</div>
 		</div>
 	);

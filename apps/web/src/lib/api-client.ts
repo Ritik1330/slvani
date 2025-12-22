@@ -408,8 +408,18 @@ class AdminApiClient extends ApiClient {
 	}
 
 	// Wishlist Management
-	async getAllWishlists(): Promise<Wishlist[]> {
-		return this.request("/api/wishlist/admin/all");
+	async getAllWishlists(params?: {
+		limit?: number;
+		skip?: number;
+	}): Promise<Wishlist[]> {
+		const queryParams = new URLSearchParams();
+		if (params?.limit) queryParams.append("limit", params.limit.toString());
+		if (params?.skip) queryParams.append("skip", params.skip.toString());
+
+		const queryString = queryParams.toString();
+		return this.request(
+			`/api/wishlist/admin/all${queryString ? `?${queryString}` : ""}`,
+		);
 	}
 
 	// Images Management

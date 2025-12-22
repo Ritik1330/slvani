@@ -48,7 +48,7 @@ app.get("/", async (c) => {
 });
 
 // Get all orders (Admin only)
-app.get("/admin/all", requireAdmin, async (c) => {
+app.get("/admin/all", requireAuth, requireAdmin, async (c) => {
 	const orders = await Order.find().sort({ createdAt: -1 });
 	return c.json(orders);
 });

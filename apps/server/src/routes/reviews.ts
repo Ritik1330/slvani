@@ -4,11 +4,15 @@ import type { Session, User } from "better-auth/types";
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { requireAuth } from "@/middleware/authentication.middleware";
-import { canAccessResource } from "@/middleware/authorization.middleware";
+import {
+	canAccessResource,
+	requireAdmin,
+} from "@/middleware/authorization.middleware";
 import {
 	createReviewBodySchema,
 	getProductReviewsParamsSchema,
 	getReviewParamsSchema,
+	getReviewsQuerySchema,
 } from "@/schemas/review.schema";
 
 type Variables = {
@@ -25,6 +29,32 @@ app.get(
 	async (c) => {
 		const { productId } = c.req.valid("param");
 		const reviews = await Review.find({ productId }).sort({ createdAt: -1 });
+		return c.json(reviews);
+	},
+);
+
+// Get all reviews (Admin only)
+app.get(
+	"/admin/all",
+	requireAuth,
+	requireAdmin,
+	zValidator("query", getReviewsQuerySchema),
+	async (c) => {
+		const query = c.req.valid("query");
+		const filter: Record<string, unknown> = {};
+
+		if (query.productId) {
+			filter.productId = query.productId;
+		}
+		if (query.isVerifiedPurchase !== undefined) {
+			filter.isVerifiedPurchase = query.isVerifiedPurchase;
+		}
+
+		const reviews = await Review.find(filter)
+			.sort({ createdAt: -1 })
+			.limit(query.limit || 0)
+			.skip(query.skip || 0);
+
 		return c.json(reviews);
 	},
 );

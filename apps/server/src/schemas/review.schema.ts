@@ -28,3 +28,18 @@ export const getReviewParamsSchema = z.object({
 export const getProductReviewsParamsSchema = z.object({
 	productId: z.string().min(1, "Product ID is required"),
 });
+
+// Schema for query parameters when getting reviews (admin)
+export const getReviewsQuerySchema = z.object({
+	productId: z.string().optional(),
+	isVerifiedPurchase: z
+		.string()
+		.transform((val) => val === "true")
+		.optional(),
+	limit: z
+		.string()
+		.transform(Number)
+		.pipe(z.number().int().positive())
+		.optional(),
+	skip: z.string().transform(Number).pipe(z.number().int().min(0)).optional(),
+});

@@ -7,6 +7,7 @@ import {
 	LayoutGrid,
 	LifeBuoy,
 	Map as MapIcon,
+	MessageSquare,
 	Package,
 	PieChart,
 	Send,
@@ -88,6 +89,17 @@ const data = {
 				{
 					title: "All Orders",
 					url: "/dashboard/orders",
+				},
+			],
+		},
+		{
+			title: "Reviews",
+			url: "/dashboard/reviews",
+			icon: MessageSquare,
+			items: [
+				{
+					title: "All Reviews",
+					url: "/dashboard/reviews",
 				},
 			],
 		},

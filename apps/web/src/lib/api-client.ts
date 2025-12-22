@@ -383,6 +383,30 @@ class AdminApiClient extends ApiClient {
 		});
 	}
 
+	// Reviews Management
+	async getAllReviews(params?: {
+		productId?: string;
+		isVerifiedPurchase?: boolean;
+		limit?: number;
+		skip?: number;
+	}): Promise<Review[]> {
+		const queryParams = new URLSearchParams();
+		if (params) {
+			Object.entries(params).forEach(([key, value]) => {
+				if (value !== undefined) {
+					queryParams.append(key, String(value));
+				}
+			});
+		}
+		return this.request(`/api/reviews/admin/all?${queryParams.toString()}`);
+	}
+
+	async deleteReview(id: string): Promise<{ message: string }> {
+		return this.request(`/api/reviews/${id}`, {
+			method: "DELETE",
+		});
+	}
+
 	// Images Management
 	async getImages(params?: {
 		usedFor?: "product" | "category" | "banner" | "other";

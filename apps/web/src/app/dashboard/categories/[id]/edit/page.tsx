@@ -271,6 +271,7 @@ export default function EditCategoryPage() {
 										</FieldLabel>
 										<Select
 											value={field.value || "none"}
+											key={field.value || "none"}
 											onValueChange={(value) =>
 												field.onChange(value === "none" ? undefined : value)
 											}

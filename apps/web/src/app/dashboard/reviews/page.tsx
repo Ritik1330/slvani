@@ -10,7 +10,20 @@ import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
 export default function ReviewsPage() {
-	const { data: reviews, isLoading } = useAdminReviewsQuery();
+	const [pageSize, setPageSize] = React.useState(10);
+	const [pageIndex, setPageIndex] = React.useState(0);
+	const [productIdFilter, setProductIdFilter] = React.useState("");
+	const [verifiedFilter, setVerifiedFilter] = React.useState<
+		boolean | undefined
+	>(undefined);
+
+	const { data: reviews, isLoading } = useAdminReviewsQuery({
+		limit: pageSize,
+		skip: pageIndex * pageSize,
+		productId: productIdFilter || undefined,
+		isVerifiedPurchase: verifiedFilter,
+	});
+
 	const deleteMutation = useAdminDeleteReview();
 
 	React.useEffect(() => {
@@ -47,11 +60,20 @@ export default function ReviewsPage() {
 				</div>
 				<div className="flex items-center gap-2 text-muted-foreground text-sm">
 					<MessageSquare className="h-4 w-4" />
-					<span>{reviews?.length || 0} total reviews</span>
+					<span>{reviews?.length || 0} reviews</span>
 				</div>
 			</div>
 
-			<DataTable columns={columns} data={reviews || []} />
+			<DataTable
+				columns={columns}
+				data={reviews || []}
+				pageSize={pageSize}
+				pageIndex={pageIndex}
+				onPageSizeChange={setPageSize}
+				onPageIndexChange={setPageIndex}
+				onProductIdFilterChange={setProductIdFilter}
+				onVerifiedFilterChange={setVerifiedFilter}
+			/>
 		</div>
 	);
 }

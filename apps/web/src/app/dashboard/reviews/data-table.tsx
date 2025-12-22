@@ -2,11 +2,8 @@
 
 import {
 	type ColumnDef,
-	type ColumnFiltersState,
 	flexRender,
 	getCoreRowModel,
-	getFilteredRowModel,
-	getPaginationRowModel,
 	getSortedRowModel,
 	type SortingState,
 	useReactTable,
@@ -33,65 +30,74 @@ import {
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
+	pageSize: number;
+	pageIndex: number;
+	onPageSizeChange: (size: number) => void;
+	onPageIndexChange: (index: number) => void;
+	onProductIdFilterChange: (productId: string) => void;
+	onVerifiedFilterChange: (verified: boolean | undefined) => void;
 }
 
 export function DataTable<TData, TValue>({
 	columns,
 	data,
+	pageSize: externalPageSize,
+	pageIndex: externalPageIndex,
+	onPageSizeChange,
+	onPageIndexChange,
+	onProductIdFilterChange,
+	onVerifiedFilterChange,
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = React.useState<SortingState>([]);
-	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-		[],
-	);
+	const [productIdFilter, setProductIdFilter] = React.useState("");
 	const [verifiedFilter, setVerifiedFilter] = React.useState<string>("all");
-	const [pageSize, setPageSize] = React.useState(10);
 
 	const table = useReactTable({
 		data,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
-		getPaginationRowModel: getPaginationRowModel(),
 		onSortingChange: setSorting,
 		getSortedRowModel: getSortedRowModel(),
-		onColumnFiltersChange: setColumnFilters,
-		getFilteredRowModel: getFilteredRowModel(),
+		manualPagination: true,
+		pageCount: -1,
 		state: {
 			sorting,
-			columnFilters,
 			pagination: {
-				pageIndex: 0,
-				pageSize,
+				pageIndex: externalPageIndex,
+				pageSize: externalPageSize,
 			},
 		},
 	});
 
-	// Apply verified filter
+	// Handle product ID filter change
+	React.useEffect(() => {
+		const timer = setTimeout(() => {
+			onProductIdFilterChange(productIdFilter);
+			onPageIndexChange(0); // Reset to first page
+		}, 500); // Debounce
+
+		return () => clearTimeout(timer);
+	}, [productIdFilter, onProductIdFilterChange, onPageIndexChange]);
+
+	// Handle verified filter change
 	React.useEffect(() => {
 		if (verifiedFilter === "all") {
-			table.getColumn("isVerifiedPurchase")?.setFilterValue(undefined);
+			onVerifiedFilterChange(undefined);
 		} else if (verifiedFilter === "verified") {
-			table.getColumn("isVerifiedPurchase")?.setFilterValue(true);
+			onVerifiedFilterChange(true);
 		} else {
-			table.getColumn("isVerifiedPurchase")?.setFilterValue(false);
+			onVerifiedFilterChange(false);
 		}
-	}, [verifiedFilter, table]);
-
-	// Update page size
-	React.useEffect(() => {
-		table.setPageSize(pageSize);
-	}, [pageSize, table]);
+		onPageIndexChange(0); // Reset to first page
+	}, [verifiedFilter, onVerifiedFilterChange, onPageIndexChange]);
 
 	return (
 		<div>
 			<div className="flex items-center gap-4 py-4">
 				<Input
 					placeholder="Search by Product ID..."
-					value={
-						(table.getColumn("productId")?.getFilterValue() as string) ?? ""
-					}
-					onChange={(event) =>
-						table.getColumn("productId")?.setFilterValue(event.target.value)
-					}
+					value={productIdFilter}
+					onChange={(event) => setProductIdFilter(event.target.value)}
 					className="max-w-sm"
 				/>
 				<Select value={verifiedFilter} onValueChange={setVerifiedFilter}>
@@ -105,8 +111,11 @@ export function DataTable<TData, TValue>({
 					</SelectContent>
 				</Select>
 				<Select
-					value={String(pageSize)}
-					onValueChange={(value) => setPageSize(Number(value))}
+					value={String(externalPageSize)}
+					onValueChange={(value) => {
+						onPageSizeChange(Number(value));
+						onPageIndexChange(0); // Reset to first page
+					}}
 				>
 					<SelectTrigger className="w-[130px]">
 						<SelectValue />
@@ -172,27 +181,23 @@ export function DataTable<TData, TValue>({
 			</div>
 			<div className="flex items-center justify-between py-4">
 				<div className="text-muted-foreground text-sm">
-					Showing {table.getState().pagination.pageIndex * pageSize + 1} to{" "}
-					{Math.min(
-						(table.getState().pagination.pageIndex + 1) * pageSize,
-						table.getFilteredRowModel().rows.length,
-					)}{" "}
-					of {table.getFilteredRowModel().rows.length} results
+					Showing {externalPageIndex * externalPageSize + 1} to{" "}
+					{externalPageIndex * externalPageSize + data.length} results
 				</div>
 				<div className="flex items-center space-x-2">
 					<Button
 						variant="outline"
 						size="sm"
-						onClick={() => table.previousPage()}
-						disabled={!table.getCanPreviousPage()}
+						onClick={() => onPageIndexChange(externalPageIndex - 1)}
+						disabled={externalPageIndex === 0}
 					>
 						Previous
 					</Button>
 					<Button
 						variant="outline"
 						size="sm"
-						onClick={() => table.nextPage()}
-						disabled={!table.getCanNextPage()}
+						onClick={() => onPageIndexChange(externalPageIndex + 1)}
+						disabled={data.length < externalPageSize}
 					>
 						Next
 					</Button>

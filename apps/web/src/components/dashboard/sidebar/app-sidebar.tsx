@@ -15,6 +15,7 @@ import {
 	Send,
 	ShoppingBag,
 	Ticket,
+	Users,
 } from "lucide-react";
 import type * as React from "react";
 import { NavUser } from "@/components/dashboard/nav-user";
@@ -124,6 +125,17 @@ const data = {
 				{
 					title: "All Wishlists",
 					url: "/dashboard/wishlist",
+				},
+			],
+		},
+		{
+			title: "Users",
+			url: "/dashboard/admin/users",
+			icon: Users,
+			items: [
+				{
+					title: "All Users",
+					url: "/dashboard/admin/users",
 				},
 			],
 		},

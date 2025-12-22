@@ -36,14 +36,14 @@ export function useToggleWishlist() {
 
 			// Optimistically update
 			if (previousWishlist) {
-				const isInWishlist = previousWishlist.products.includes(productId);
-				const newProducts = isInWishlist
-					? previousWishlist.products.filter((id) => id !== productId)
-					: [...previousWishlist.products, productId];
+				const isInWishlist = previousWishlist.productIds.includes(productId);
+				const newProductIds = isInWishlist
+					? previousWishlist.productIds.filter((id) => id !== productId)
+					: [...previousWishlist.productIds, productId];
 
 				queryClient.setQueryData<Wishlist>(wishlistKeys.detail(), {
 					...previousWishlist,
-					products: newProducts,
+					productIds: newProductIds,
 				});
 			}
 
@@ -71,11 +71,11 @@ export function useToggleWishlist() {
 // Helper hook to check if product is in wishlist
 export function useIsInWishlist(productId: string) {
 	const { data: wishlist } = useWishlistQuery();
-	return wishlist?.products.includes(productId) || false;
+	return wishlist?.productIds.includes(productId) || false;
 }
 
 // Helper hook for wishlist count
 export function useWishlistCount() {
 	const { data: wishlist } = useWishlistQuery();
-	return wishlist?.products.length || 0;
+	return wishlist?.productIds.length || 0;
 }

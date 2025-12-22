@@ -7,6 +7,8 @@ import { requireAuth } from "@/middleware/authentication.middleware";
 import { requireAdmin } from "@/middleware/authorization.middleware";
 import {
 	createCouponBodySchema,
+	getCouponParamsSchema,
+	updateCouponBodySchema,
 	verifyCouponBodySchema,
 } from "@/schemas/coupon.schema";
 
@@ -78,6 +80,79 @@ app.post(
 		});
 
 		return c.json(coupon, 201);
+	},
+);
+
+// Get single coupon (Admin only)
+app.get(
+	"/:id",
+	requireAuth,
+	requireAdmin,
+	zValidator("param", getCouponParamsSchema),
+	async (c) => {
+		const { id } = c.req.valid("param");
+
+		const coupon = await Coupon.findById(id);
+
+		if (!coupon) {
+			throw new HTTPException(404, { message: "Coupon not found" });
+		}
+
+		return c.json(coupon);
+	},
+);
+
+// Update coupon (Admin only)
+app.put(
+	"/:id",
+	requireAuth,
+	requireAdmin,
+	zValidator("param", getCouponParamsSchema),
+	zValidator("json", updateCouponBodySchema),
+	async (c) => {
+		const user = c.get("user") as User;
+		const { id } = c.req.valid("param");
+		const body = c.req.valid("json");
+
+		const updateData = {
+			...body,
+			updatedBy: user.id,
+		};
+
+		// If code is being updated, ensure it's uppercase
+		if (body.code) {
+			updateData.code = body.code.toUpperCase();
+		}
+
+		const coupon = await Coupon.findByIdAndUpdate(id, updateData, {
+			new: true,
+			runValidators: true,
+		});
+
+		if (!coupon) {
+			throw new HTTPException(404, { message: "Coupon not found" });
+		}
+
+		return c.json(coupon);
+	},
+);
+
+// Delete coupon (Admin only)
+app.delete(
+	"/:id",
+	requireAuth,
+	requireAdmin,
+	zValidator("param", getCouponParamsSchema),
+	async (c) => {
+		const { id } = c.req.valid("param");
+
+		const coupon = await Coupon.findByIdAndDelete(id);
+
+		if (!coupon) {
+			throw new HTTPException(404, { message: "Coupon not found" });
+		}
+
+		return c.json({ message: "Coupon deleted successfully" });
 	},
 );
 

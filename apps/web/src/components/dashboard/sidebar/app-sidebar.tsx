@@ -11,6 +11,7 @@ import {
 	PieChart,
 	Send,
 	Tag,
+	Ticket,
 } from "lucide-react";
 import type * as React from "react";
 import { NavUser } from "@/components/dashboard/nav-user";
@@ -62,6 +63,21 @@ const data = {
 				{
 					title: "Add New",
 					url: "/dashboard/campaigns/new",
+				},
+			],
+		},
+		{
+			title: "Coupons",
+			url: "/dashboard/coupons",
+			icon: Ticket,
+			items: [
+				{
+					title: "All Coupons",
+					url: "/dashboard/coupons",
+				},
+				{
+					title: "Add New",
+					url: "/dashboard/coupons/new",
 				},
 			],
 		},

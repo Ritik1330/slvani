@@ -37,6 +37,12 @@ export const createCouponBodySchema = z.object({
 
 // Schema for updating a coupon
 export const updateCouponBodySchema = z.object({
+	code: z
+		.string()
+		.min(3, "Coupon code must be at least 3 characters")
+		.max(20, "Coupon code must be at most 20 characters")
+		.toUpperCase()
+		.optional(),
 	discountType: z.enum(["percentage", "fixed"]).optional(),
 	discountValue: z.number().positive().optional(),
 	minPurchase: z.number().min(0).optional(),

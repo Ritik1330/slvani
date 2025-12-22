@@ -342,6 +342,10 @@ class AdminApiClient extends ApiClient {
 		return this.request("/api/coupons");
 	}
 
+	async getCoupon(id: string): Promise<Coupon> {
+		return this.request(`/api/coupons/${id}`);
+	}
+
 	async createCoupon(coupon: {
 		code: string;
 		discountType: "percentage" | "fixed";

@@ -8,6 +8,7 @@ export const couponKeys = {
 	all: ["coupons"] as const,
 	lists: () => [...couponKeys.all, "list"] as const,
 	list: () => [...couponKeys.lists()] as const,
+	detail: (id: string) => [...couponKeys.all, "detail", id] as const,
 	verify: (code: string) => [...couponKeys.all, "verify", code] as const,
 };
 
@@ -27,6 +28,16 @@ export function useCouponsQuery() {
 	return useQuery({
 		queryKey: couponKeys.list(),
 		queryFn: () => adminApiClient.getAllCoupons(),
+		staleTime: 5 * 60 * 1000, // 5 minutes
+	});
+}
+
+// Get single coupon query (admin only)
+export function useCouponQuery(id: string) {
+	return useQuery({
+		queryKey: couponKeys.detail(id),
+		queryFn: () => adminApiClient.getCoupon(id),
+		enabled: !!id,
 		staleTime: 5 * 60 * 1000, // 5 minutes
 	});
 }

@@ -87,3 +87,19 @@ export function useUpdateOrderStatus() {
 		},
 	});
 }
+
+// Seed orders mutation (admin only - dev only)
+export function useSeedOrders() {
+	const queryClient = useQueryClient();
+
+	return useMutation<{ message: string; count: number }, Error, void>({
+		mutationFn: () => adminApiClient.seedOrders(),
+		onSuccess: (data) => {
+			queryClient.invalidateQueries({ queryKey: orderKeys.admin() });
+			toast.success(`${data.count} orders seeded successfully`);
+		},
+		onError: (error: Error) => {
+			toast.error(error.message || "Failed to seed orders");
+		},
+	});
+}

@@ -10,6 +10,7 @@ import {
 	Package,
 	PieChart,
 	Send,
+	ShoppingBag,
 	Ticket,
 } from "lucide-react";
 import type * as React from "react";
@@ -76,6 +77,17 @@ const data = {
 				{
 					title: "Add New",
 					url: "/dashboard/coupons/new",
+				},
+			],
+		},
+		{
+			title: "Orders",
+			url: "/dashboard/orders",
+			icon: ShoppingBag,
+			items: [
+				{
+					title: "All Orders",
+					url: "/dashboard/orders",
 				},
 			],
 		},

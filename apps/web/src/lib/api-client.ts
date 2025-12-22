@@ -337,6 +337,12 @@ class AdminApiClient extends ApiClient {
 		});
 	}
 
+	async seedOrders(): Promise<{ message: string; count: number }> {
+		return this.request("/api/orders/seed", {
+			method: "POST",
+		});
+	}
+
 	// Coupons Management
 	async getAllCoupons(): Promise<Coupon[]> {
 		return this.request("/api/coupons");

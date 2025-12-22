@@ -3,14 +3,12 @@
 import {
 	Command,
 	Frame,
+	Image as ImageIcon,
 	LayoutGrid,
 	LifeBuoy,
 	Map as MapIcon,
-	Megaphone,
-	Monitor,
 	PieChart,
 	Send,
-	Tag,
 	Ticket,
 } from "lucide-react";
 import type * as React from "react";
@@ -39,7 +37,6 @@ const data = {
 			title: "Categories",
 			url: "/dashboard/categories",
 			icon: LayoutGrid,
-			isActive: true,
 			items: [
 				{
 					title: "All Categories",
@@ -48,21 +45,6 @@ const data = {
 				{
 					title: "Add New",
 					url: "/dashboard/categories/new",
-				},
-			],
-		},
-		{
-			title: "Campaigns",
-			url: "/dashboard/campaigns",
-			icon: Megaphone,
-			items: [
-				{
-					title: "All Campaigns",
-					url: "/dashboard/campaigns",
-				},
-				{
-					title: "Add New",
-					url: "/dashboard/campaigns/new",
 				},
 			],
 		},
@@ -82,32 +64,17 @@ const data = {
 			],
 		},
 		{
-			title: "Deals",
-			url: "/dashboard/deals",
-			icon: Tag,
+			title: "Images",
+			url: "/dashboard/images",
+			icon: ImageIcon,
 			items: [
 				{
-					title: "All Deals",
-					url: "/dashboard/deals",
+					title: "All Images",
+					url: "/dashboard/images",
 				},
 				{
-					title: "Add New",
-					url: "/dashboard/deals/new",
-				},
-			],
-		},
-		{
-			title: "Ads",
-			url: "/dashboard/ads",
-			icon: Monitor,
-			items: [
-				{
-					title: "All Ads",
-					url: "/dashboard/ads",
-				},
-				{
-					title: "Add New",
-					url: "/dashboard/ads/new",
+					title: "Upload",
+					url: "/dashboard/images/new",
 				},
 			],
 		},

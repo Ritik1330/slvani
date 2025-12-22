@@ -21,7 +21,10 @@ export function useImagesQuery(filters?: {
 }) {
 	return useQuery({
 		queryKey: imageKeys.list(filters),
-		queryFn: () => adminApiClient.getImages(filters),
+		queryFn: async () => {
+			const response = await adminApiClient.getImages(filters);
+			return response.data; // Return just the data array
+		},
 		staleTime: 5 * 60 * 1000, // 5 minutes
 	});
 }

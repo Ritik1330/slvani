@@ -1,12 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { apiClient } from "@/lib/api-client";
+import { adminApiClient, apiClient } from "@/lib/api-client";
 import type { Wishlist } from "@/types";
 
 // Query keys
 export const wishlistKeys = {
 	all: ["wishlist"] as const,
 	detail: () => [...wishlistKeys.all, "detail"] as const,
+	admin: () => [...wishlistKeys.all, "admin"] as const,
 };
 
 // Get wishlist query
@@ -16,6 +17,15 @@ export function useWishlistQuery() {
 		queryFn: () => apiClient.getWishlist(),
 		retry: 1,
 		staleTime: 30 * 1000, // 30 seconds
+	});
+}
+
+// Get all wishlists query (admin only)
+export function useAdminWishlistsQuery() {
+	return useQuery({
+		queryKey: wishlistKeys.admin(),
+		queryFn: () => adminApiClient.getAllWishlists(),
+		staleTime: 1 * 60 * 1000, // 1 minute
 	});
 }
 

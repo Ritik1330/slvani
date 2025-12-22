@@ -407,6 +407,11 @@ class AdminApiClient extends ApiClient {
 		});
 	}
 
+	// Wishlist Management
+	async getAllWishlists(): Promise<Wishlist[]> {
+		return this.request("/api/wishlist/admin/all");
+	}
+
 	// Images Management
 	async getImages(params?: {
 		usedFor?: "product" | "category" | "banner" | "other";

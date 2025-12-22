@@ -3,6 +3,7 @@
 import {
 	Command,
 	Frame,
+	Heart,
 	Image as ImageIcon,
 	LayoutGrid,
 	LifeBuoy,
@@ -100,6 +101,17 @@ const data = {
 				{
 					title: "All Reviews",
 					url: "/dashboard/reviews",
+				},
+			],
+		},
+		{
+			title: "Wishlist",
+			url: "/dashboard/wishlist",
+			icon: Heart,
+			items: [
+				{
+					title: "All Wishlists",
+					url: "/dashboard/wishlist",
 				},
 			],
 		},

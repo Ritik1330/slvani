@@ -29,6 +29,7 @@ export default async function CategoryPage({
 			category: categoryData._id,
 			limit: 100,
 			page: 1,
+			isActive: true,
 		});
 
 		products = productsResponse.data;

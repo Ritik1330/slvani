@@ -9,6 +9,7 @@ export default async function CollectionsPage() {
 		const productsResponse = await apiClient.getProducts({
 			limit: 100,
 			page: 1,
+			isActive: true,
 		});
 		products = productsResponse.data;
 	} catch (error) {

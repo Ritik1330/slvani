@@ -9,7 +9,11 @@ export default async function Home() {
 	let products: Product[] = [];
 
 	try {
-		const productsResponse = await apiClient.getProducts({ limit: 4, page: 1 });
+		const productsResponse = await apiClient.getProducts({
+			limit: 4,
+			page: 1,
+			isActive: true,
+		});
 		products = productsResponse.data;
 	} catch (error) {
 		console.error("Failed to fetch products:", error);
@@ -39,7 +43,11 @@ export default async function Home() {
 									id={product._id}
 									title={product.title}
 									price={product.price}
-									coverImage={product.coverImage}
+									coverImage={
+										typeof product.coverImage === "string"
+											? product.coverImage
+											: product.coverImage?.url || ""
+									}
 									category={
 										typeof product.category === "string"
 											? product.category

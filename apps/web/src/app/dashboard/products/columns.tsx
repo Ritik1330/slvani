@@ -119,6 +119,17 @@ export const createColumns = (
 		},
 	},
 	{
+		accessorKey: "isActive",
+		header: "Status",
+		cell: ({ row }) => {
+			return (
+				<Badge variant={row.original.isActive ? "default" : "secondary"}>
+					{row.original.isActive ? "Active" : "Inactive"}
+				</Badge>
+			);
+		},
+	},
+	{
 		id: "actions",
 		cell: ({ row }) => {
 			const product = row.original;

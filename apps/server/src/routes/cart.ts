@@ -4,6 +4,7 @@ import type { Session, User } from "better-auth/types";
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { requireAuth } from "@/middleware/authentication.middleware";
+import { requireAdmin } from "@/middleware/authorization.middleware";
 import {
 	addToCartBodySchema,
 	removeFromCartBodySchema,
@@ -11,7 +12,7 @@ import {
 } from "@/schemas/cart.schema";
 
 type Variables = {
-	user: User; // Non-null because all routes require auth
+	user: User; // All routes require auth
 	session: Session;
 };
 
@@ -19,6 +20,24 @@ const app = new Hono<{ Variables: Variables }>();
 
 // All cart routes require authentication
 app.use("*", requireAuth);
+
+// Admin: Get all carts
+app.get("/admin/all", requireAdmin, async (c) => {
+	const limit = Number(c.req.query("limit")) || 10;
+	const skip = Number(c.req.query("skip")) || 0;
+
+	const carts = await Cart.find()
+		.sort({ updatedAt: -1 })
+		.limit(limit)
+		.skip(skip);
+
+	// Populate each cart with product details
+	const populatedCarts = await Promise.all(
+		carts.map((cart) => populateCartWithProducts(cart)),
+	);
+
+	return c.json(populatedCarts);
+});
 
 // Helper function to populate cart with product details
 async function populateCartWithProducts(cart: any) {

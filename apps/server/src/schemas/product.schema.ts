@@ -19,6 +19,7 @@ export const createProductBodySchema = z.object({
 			count: z.number().int().min(0).default(0),
 		})
 		.default({ rate: 0, count: 0 }),
+	isActive: z.boolean().default(true),
 });
 
 // Schema for updating a product
@@ -36,6 +37,7 @@ export const updateProductBodySchema = z.object({
 			count: z.number().int().min(0),
 		})
 		.optional(),
+	isActive: z.boolean().optional(),
 });
 
 // Schema for product ID parameter
@@ -52,4 +54,5 @@ export const getProductsQuerySchema = z.object({
 	maxPrice: z.coerce.number().positive().optional(),
 	page: z.coerce.number().int().positive().default(1),
 	limit: z.coerce.number().int().positive().default(10),
+	isActive: z.coerce.boolean().optional(),
 });

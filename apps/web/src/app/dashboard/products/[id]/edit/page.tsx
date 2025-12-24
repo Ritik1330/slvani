@@ -37,6 +37,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { useCategoriesQuery } from "@/hooks/use-categories";
 import { useProductQuery, useUpdateProduct } from "@/hooks/use-products";
 
@@ -51,9 +52,10 @@ const formSchema = z.object({
 		.max(500, "Description must be at most 500 characters."),
 	price: z.number().min(1, "Price must be at least 1."),
 	coverImage: z.string().min(1, "Cover image is required."),
-	images: z.array(z.string()).default([]),
+	images: z.array(z.string()),
 	category: z.string().min(1, "Category is required."),
 	gender: z.enum(["unisex", "men", "women"]),
+	isActive: z.boolean(),
 });
 
 export default function EditProductPage() {
@@ -75,6 +77,7 @@ export default function EditProductPage() {
 			images: [],
 			category: "",
 			gender: "unisex",
+			isActive: true,
 		},
 	});
 
@@ -105,6 +108,7 @@ export default function EditProductPage() {
 				images: imageIds,
 				category: categoryId,
 				gender: product.gender,
+				isActive: product.isActive,
 			});
 		}
 	}, [product, form]);
@@ -121,10 +125,11 @@ export default function EditProductPage() {
 				images: data.images,
 				category: data.category,
 				gender: data.gender,
+				isActive: data.isActive,
 			},
 			{
 				onSuccess: () => {
-					router.push("/dashboard/products");
+					router.push("/dashboard/products" as any);
 				},
 			},
 		);
@@ -373,6 +378,28 @@ export default function EditProductPage() {
 									</Field>
 								)}
 							/>
+
+							<Controller
+								name="isActive"
+								control={form.control}
+								render={({ field }) => (
+									<Field orientation="horizontal">
+										<div className="space-y-0.5">
+											<FieldLabel htmlFor="product-active">
+												Active Status
+											</FieldLabel>
+											<FieldDescription>
+												Inactive products won't be visible to customers.
+											</FieldDescription>
+										</div>
+										<Switch
+											id="product-active"
+											checked={field.value}
+											onCheckedChange={field.onChange}
+										/>
+									</Field>
+								)}
+							/>
 						</FieldGroup>
 					</form>
 				</CardContent>
@@ -381,7 +408,7 @@ export default function EditProductPage() {
 						<Button
 							type="button"
 							variant="outline"
-							onClick={() => router.push("/dashboard/products")}
+							onClick={() => router.push("/dashboard/products" as any)}
 						>
 							Cancel
 						</Button>

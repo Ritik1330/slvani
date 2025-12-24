@@ -14,6 +14,7 @@ export interface IProduct {
 		rate: number;
 		count: number;
 	};
+	isActive: boolean;
 	createdBy: string;
 	updatedBy: string;
 	createdAt: Date;
@@ -37,6 +38,11 @@ const productSchema = new mongoose.Schema<IProduct>(
 		rating: {
 			rate: { type: Number, default: 0 },
 			count: { type: Number, default: 0 },
+		},
+		isActive: {
+			type: Boolean,
+			default: true,
+			index: true,
 		},
 		createdBy: { type: String, ref: "User", required: true },
 		updatedBy: { type: String, ref: "User", required: true },

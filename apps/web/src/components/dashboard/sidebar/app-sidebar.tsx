@@ -14,6 +14,7 @@ import {
 	PieChart,
 	Send,
 	ShoppingBag,
+	ShoppingCart,
 	Ticket,
 	Users,
 } from "lucide-react";
@@ -125,6 +126,17 @@ const data = {
 				{
 					title: "All Wishlists",
 					url: "/dashboard/wishlist",
+				},
+			],
+		},
+		{
+			title: "Carts",
+			url: "/dashboard/carts",
+			icon: ShoppingCart,
+			items: [
+				{
+					title: "All Carts",
+					url: "/dashboard/carts",
 				},
 			],
 		},

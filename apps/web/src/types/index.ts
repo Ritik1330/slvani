@@ -4,6 +4,7 @@ import type {
 	ICartItem,
 	ICategory,
 	ICoupon,
+	IImage,
 	IOrder,
 	IOrderAddress,
 	IOrderItem,
@@ -22,9 +23,16 @@ type DateToString<T> = {
 			: T[K];
 };
 
+// Image Types
+export type Image = DateToString<IImage>;
+
 // Product Types
-export type Product = DateToString<Omit<IProduct, "category">> & {
+export type Product = DateToString<
+	Omit<IProduct, "category" | "coverImage" | "images">
+> & {
 	category: string | Category;
+	coverImage: string | Image;
+	images: (string | Image)[];
 };
 
 // Category Types

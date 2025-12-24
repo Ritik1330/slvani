@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { apiClient } from "@/lib/api-client";
+import { adminApiClient, apiClient } from "@/lib/api-client";
 import type { Cart } from "@/types";
 
 // Query keys
@@ -114,4 +114,13 @@ export function useCartSummary() {
 		) || 0;
 
 	return { cartCount, cartTotal };
+}
+
+// Admin: Get all carts
+export function useAdminCartsQuery(params?: { limit?: number; skip?: number }) {
+	return useQuery({
+		queryKey: ["admin", "carts", params],
+		queryFn: () => adminApiClient.getAllCarts(params),
+		staleTime: 30 * 1000,
+	});
 }

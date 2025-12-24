@@ -52,6 +52,7 @@ class ApiClient {
 		maxPrice?: number;
 		page?: number;
 		limit?: number;
+		isActive?: boolean;
 	}): Promise<PaginatedResponse<Product>> {
 		const queryParams = new URLSearchParams();
 		if (params) {
@@ -244,6 +245,7 @@ class AdminApiClient extends ApiClient {
 		images?: string[];
 		gender?: "unisex" | "men" | "women";
 		rating?: { rate: number; count: number };
+		isActive?: boolean;
 	}): Promise<Product> {
 		return this.request("/api/products", {
 			method: "POST",
@@ -513,6 +515,21 @@ class AdminApiClient extends ApiClient {
 			method: "POST",
 			body: JSON.stringify({ folder: folder || "ecommerce" }),
 		});
+	}
+
+	// Cart Management
+	async getAllCarts(params?: {
+		limit?: number;
+		skip?: number;
+	}): Promise<Cart[]> {
+		const queryParams = new URLSearchParams();
+		if (params?.limit) queryParams.append("limit", params.limit.toString());
+		if (params?.skip) queryParams.append("skip", params.skip.toString());
+
+		const queryString = queryParams.toString();
+		return this.request(
+			`/api/cart/admin/all${queryString ? `?${queryString}` : ""}`,
+		);
 	}
 }
 

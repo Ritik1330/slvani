@@ -41,6 +41,10 @@ app.get("/", zValidator("query", getProductsQuerySchema), async (c) => {
 		if (query.maxPrice) filter.price.$lte = query.maxPrice;
 	}
 
+	if (query.isActive !== undefined) {
+		filter.isActive = query.isActive;
+	}
+
 	let sortOption: any = { createdAt: -1 };
 	if (query.sort === "price_asc") sortOption = { price: 1 };
 	if (query.sort === "price_desc") sortOption = { price: -1 };

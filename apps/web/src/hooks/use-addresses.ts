@@ -29,8 +29,10 @@ export function useCreateAddress() {
 			queryClient.invalidateQueries({ queryKey: addressKeys.lists() });
 			toast.success("Address added successfully");
 		},
-		onError: (error: Error) => {
-			toast.error(error.message || "Failed to add address");
+		onError: (error: unknown) => {
+			const message =
+				error instanceof Error ? error.message : "Failed to add address";
+			toast.error(message);
 		},
 	});
 }
@@ -46,8 +48,10 @@ export function useUpdateAddress() {
 			queryClient.invalidateQueries({ queryKey: addressKeys.lists() });
 			toast.success("Address updated successfully");
 		},
-		onError: (error: Error) => {
-			toast.error(error.message || "Failed to update address");
+		onError: (error: unknown) => {
+			const message =
+				error instanceof Error ? error.message : "Failed to update address";
+			toast.error(message);
 		},
 	});
 }
@@ -62,8 +66,10 @@ export function useDeleteAddress() {
 			queryClient.invalidateQueries({ queryKey: addressKeys.lists() });
 			toast.success("Address deleted successfully");
 		},
-		onError: (error: Error) => {
-			toast.error(error.message || "Failed to delete address");
+		onError: (error: unknown) => {
+			const message =
+				error instanceof Error ? error.message : "Failed to delete address";
+			toast.error(message);
 		},
 	});
 }

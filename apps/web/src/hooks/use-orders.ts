@@ -21,6 +21,9 @@ export function useOrdersQuery() {
 	});
 }
 
+// Alias for user orders
+export const useUserOrdersQuery = useOrdersQuery;
+
 // Get single order query
 export function useOrderQuery(id: string) {
 	return useQuery({

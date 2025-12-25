@@ -5,6 +5,7 @@ import CartSheet from "@/components/store/cart-sheet";
 import { Button } from "@/components/ui/button";
 import { apiClient } from "@/lib/api-client";
 import type { Category } from "@/types";
+import MobileMenuSheet from "./mobile-menu-sheet";
 import { ModeToggle } from "./mode-toggle";
 import UserMenu from "./user-menu";
 
@@ -20,8 +21,10 @@ export default async function Header() {
 	return (
 		<header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
 			<div className="container mx-auto flex h-16 items-center justify-between px-4">
-				{/* Mobile Menu Sheet - Moved to BottomNav */}
-				{/* <MobileMenuSheet categories={categories} /> */}
+				{/* Mobile Menu Sheet */}
+				<div className="md:hidden">
+					<MobileMenuSheet categories={categories} />
+				</div>
 
 				{/* Desktop Navigation */}
 				<nav className="hidden items-center gap-6 font-medium text-sm md:flex">

@@ -140,8 +140,26 @@ class ApiClient {
 		discount: number;
 		total: number;
 		paymentMethod: "card" | "upi" | "netbanking" | "cod";
-		shippingAddress: Address;
-		billingAddress: Address;
+		shippingAddress: {
+			fullName: string;
+			phone: string;
+			addressLine1: string;
+			addressLine2?: string;
+			city: string;
+			state: string;
+			pincode: string;
+			country: string;
+		};
+		billingAddress: {
+			fullName: string;
+			phone: string;
+			addressLine1: string;
+			addressLine2?: string;
+			city: string;
+			state: string;
+			pincode: string;
+			country: string;
+		};
 		couponCode?: string;
 	}): Promise<Order> {
 		return this.request("/api/orders", {
@@ -220,13 +238,26 @@ class ApiClient {
 		});
 	}
 
-	// Payments
-	async createPaymentIntent(data: {
-		amount: number;
+	// Payments - Razorpay
+	async createRazorpayOrder(amount: number): Promise<{
 		orderId: string;
-		method?: "card" | "upi" | "netbanking" | "cod";
-	}): Promise<{ clientSecret: string }> {
-		return this.request("/api/payments/create-intent", {
+		amount: number;
+		currency: string;
+		keyId: string;
+	}> {
+		return this.request("/api/payments/create-order", {
+			method: "POST",
+			body: JSON.stringify({ amount }),
+		});
+	}
+
+	async verifyPayment(data: {
+		razorpay_order_id: string;
+		razorpay_payment_id: string;
+		razorpay_signature: string;
+		orderId: string;
+	}): Promise<{ success: boolean; order: Order }> {
+		return this.request("/api/payments/verify", {
 			method: "POST",
 			body: JSON.stringify(data),
 		});

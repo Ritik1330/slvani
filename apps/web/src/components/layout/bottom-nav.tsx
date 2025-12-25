@@ -1,13 +1,13 @@
 "use client";
 
-import { Home, LayoutGrid, ShoppingBag, User } from "lucide-react";
+import { Home, Package, ShoppingBag, User } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import CartSheet from "@/components/store/cart-sheet";
 import { useCartSummary } from "@/hooks/use-cart";
 import { apiClient } from "@/lib/api-client";
 import type { Category } from "@/types";
-import MobileMenuSheet from "./mobile-menu-sheet";
+
 import UserMenu from "./user-menu";
 
 export default function BottomNav() {
@@ -29,19 +29,14 @@ export default function BottomNav() {
 				<span className="font-medium text-[10px]">Home</span>
 			</Link>
 
-			{/* Categories */}
-			<MobileMenuSheet
-				categories={categories}
-				customTrigger={
-					<button
-						type="button"
-						className="flex flex-col items-center justify-center gap-1 text-muted-foreground hover:text-primary"
-					>
-						<LayoutGrid className="h-5 w-5" />
-						<span className="font-medium text-[10px]">Shop</span>
-					</button>
-				}
-			/>
+			{/* Orders */}
+			<Link
+				href="/my/orders"
+				className="flex flex-col items-center justify-center gap-1 text-muted-foreground hover:text-primary"
+			>
+				<Package className="h-5 w-5" />
+				<span className="font-medium text-[10px]">Orders</span>
+			</Link>
 
 			{/* Cart */}
 			<CartSheet

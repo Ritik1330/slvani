@@ -164,11 +164,18 @@ export default function CartSheet({
 							<p className="text-muted-foreground text-xs">
 								Shipping and taxes calculated at checkout.
 							</p>
-							<Button className="w-full" size="lg" asChild>
-								<Link href="/checkout" onClick={() => setIsOpen(false)}>
-									Checkout
-								</Link>
-							</Button>
+							<div className="flex gap-2">
+								<Button variant="outline" className="flex-1" asChild>
+									<Link href="/my/cart" onClick={() => setIsOpen(false)}>
+										View Cart
+									</Link>
+								</Button>
+								<Button className="flex-1" size="lg" asChild>
+									<Link href="/checkout" onClick={() => setIsOpen(false)}>
+										Checkout
+									</Link>
+								</Button>
+							</div>
 						</div>
 					</SheetFooter>
 				)}

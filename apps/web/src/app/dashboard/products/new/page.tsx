@@ -91,7 +91,7 @@ export default function NewProductPage() {
 			},
 			{
 				onSuccess: () => {
-					router.push("/dashboard/products" as any);
+					router.push("/dashboard/products");
 				},
 			},
 		);
@@ -349,7 +349,7 @@ export default function NewProductPage() {
 						<Button
 							type="button"
 							variant="outline"
-							onClick={() => router.push("/dashboard/products" as any)}
+							onClick={() => router.push("/dashboard/products")}
 						>
 							Cancel
 						</Button>

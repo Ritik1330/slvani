@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import HeroSection from "@/components/store/hero-section";
 import ProductCard from "@/components/store/product-card";
@@ -73,11 +74,13 @@ export default async function Home() {
 			{/* Brand Story / Banner */}
 			<section className="bg-primary/5 py-20">
 				<div className="container mx-auto grid items-center gap-12 px-4 md:grid-cols-2">
-					<div className="order-2 md:order-1">
-						<img
+					<div className="relative order-2 aspect-[4/3] overflow-hidden rounded-lg md:order-1">
+						<Image
 							src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?q=80&w=1982&auto=format&fit=crop"
 							alt="Craftsmanship"
-							className="rounded-lg shadow-xl"
+							fill
+							className="object-cover shadow-xl"
+							sizes="(max-width: 768px) 100vw, 50vw"
 						/>
 					</div>
 					<div className="order-1 space-y-6 md:order-2">

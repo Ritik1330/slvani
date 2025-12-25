@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { adminApiClient } from "@/lib/api-client";
-import type { Payment } from "@/types";
 
 // Query keys
 export const paymentKeys = {

@@ -1,6 +1,7 @@
 "use client";
 
 import { Loader2 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -134,11 +135,12 @@ export default function CheckoutPage() {
 						<div className="mb-6 space-y-4">
 							{items.map((item) => (
 								<div key={item.productId} className="flex gap-4">
-									<div className="h-16 w-16 shrink-0 overflow-hidden rounded-md border bg-secondary/20">
-										<img
+									<div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md border bg-secondary/20">
+										<Image
 											src={item.coverImage}
 											alt={item.title}
-											className="h-full w-full object-cover"
+											fill
+											className="object-cover"
 										/>
 									</div>
 									<div className="flex-1">

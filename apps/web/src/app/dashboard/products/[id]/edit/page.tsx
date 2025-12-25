@@ -129,7 +129,7 @@ export default function EditProductPage() {
 			},
 			{
 				onSuccess: () => {
-					router.push("/dashboard/products" as any);
+					router.push("/dashboard/products");
 				},
 			},
 		);
@@ -408,7 +408,7 @@ export default function EditProductPage() {
 						<Button
 							type="button"
 							variant="outline"
-							onClick={() => router.push("/dashboard/products" as any)}
+							onClick={() => router.push("/dashboard/products")}
 						>
 							Cancel
 						</Button>

@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { adminApiClient, apiClient } from "@/lib/api-client";
-import type { Order } from "@/types";
 
 // Query keys
 export const orderKeys = {

@@ -1,6 +1,7 @@
 "use client";
 
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,11 @@ import {
 	useUpdateCart,
 } from "@/hooks/use-cart";
 
-export default function CartSheet() {
+export default function CartSheet({
+	customTrigger,
+}: {
+	customTrigger?: React.ReactNode;
+}) {
 	const { data: cart, isLoading } = useCartQuery();
 	const { cartCount, cartTotal } = useCartSummary();
 	const removeFromCart = useRemoveFromCart();
@@ -31,16 +36,18 @@ export default function CartSheet() {
 	return (
 		<Sheet open={isOpen} onOpenChange={setIsOpen}>
 			<SheetTrigger asChild>
-				<Button variant="ghost" size="icon" className="relative">
-					<ShoppingBag className="h-5 w-5" />
-					{cartCount > 0 && (
-						<span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary font-bold text-[10px] text-primary-foreground">
-							{cartCount}
-						</span>
-					)}
-				</Button>
+				{customTrigger || (
+					<Button variant="ghost" size="icon" className="relative">
+						<ShoppingBag className="h-5 w-5" />
+						{cartCount > 0 && (
+							<span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary font-bold text-[10px] text-primary-foreground">
+								{cartCount}
+							</span>
+						)}
+					</Button>
+				)}
 			</SheetTrigger>
-			<SheetContent className="flex w-full flex-col sm:max-w-lg">
+			<SheetContent className="flex w-full flex-col px-4 sm:max-w-lg">
 				<SheetHeader>
 					<SheetTitle>Shopping Cart ({cartCount})</SheetTitle>
 				</SheetHeader>
@@ -62,12 +69,13 @@ export default function CartSheet() {
 						<div className="space-y-6">
 							{items.map((item) => (
 								<div key={item.productId} className="flex gap-4">
-									<div className="h-24 w-24 shrink-0 overflow-hidden rounded-md border bg-secondary/20">
+									<div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-md border bg-secondary/20">
 										{item.coverImage ? (
-											<img
+											<Image
 												src={item.coverImage}
 												alt={item.title}
-												className="h-full w-full object-cover object-center"
+												fill
+												className="object-cover object-center"
 											/>
 										) : (
 											<div className="flex h-full w-full items-center justify-center bg-secondary/20">

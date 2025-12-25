@@ -1,6 +1,7 @@
 "use client";
 
 import { ShoppingBag } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -32,10 +33,11 @@ export default function ProductCard({
 		<Card className="group overflow-hidden border-none bg-transparent shadow-none">
 			<CardContent className="relative mb-4 aspect-square overflow-hidden rounded-lg bg-secondary/20 p-0">
 				<Link href={`/product/${id}`}>
-					<img
+					<Image
 						src={coverImage}
 						alt={title}
-						className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+						fill
+						className="object-cover transition-transform duration-500 group-hover:scale-105"
 					/>
 				</Link>
 				<div className="absolute right-4 bottom-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">

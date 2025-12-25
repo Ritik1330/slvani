@@ -147,7 +147,7 @@ export const createColumns = (
 						<DropdownMenuContent align="end">
 							<DropdownMenuLabel>Actions</DropdownMenuLabel>
 							<DropdownMenuSeparator />
-							<Link href={`/dashboard/products/${product._id}/edit` as any}>
+							<Link href={`/dashboard/products/${product._id}/edit`}>
 								<DropdownMenuItem>
 									<Edit className="mr-2 h-4 w-4" />
 									Edit

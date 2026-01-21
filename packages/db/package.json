@@ -1,17 +1,22 @@
 {
 	"name": "@ecommerce/db",
 	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
 	"exports": {
 		".": {
-			"default": "./src/index.ts"
-		},
-		"./*": {
-			"default": "./src/*.ts"
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"default": "./dist/index.js"
 		}
 	},
-	"scripts": {},
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsc --watch"
+	},
 	"devDependencies": {
-		"@ecommerce/config": "*"
+		"@ecommerce/config": "*",
+		"typescript": "^5.8.2"
 	},
 	"peerDependencies": {
 		"typescript": "^5"

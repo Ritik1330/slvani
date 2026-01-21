@@ -1,6 +1,6 @@
 {
 	"name": "server",
-	"main": "dist/index.js",
+	"main": "dist/index.mjs",
 	"type": "module",
 	"scripts": {
 		"build": "tsdown",

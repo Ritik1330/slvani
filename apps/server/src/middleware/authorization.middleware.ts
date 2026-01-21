@@ -2,6 +2,15 @@ import type { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
 
 /**
+ * User type from better-auth
+ */
+type User = {
+	id: string;
+	role?: string;
+	[key: string]: unknown;
+};
+
+/**
  * User roles for authorization
  */
 export enum UserRole {

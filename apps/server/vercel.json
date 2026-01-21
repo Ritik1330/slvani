@@ -1,0 +1,5 @@
+{
+	"buildCommand": "turbo build --filter=server",
+	"outputDirectory": "dist",
+	"installCommand": "npm install"
+}

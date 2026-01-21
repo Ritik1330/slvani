@@ -41,31 +41,22 @@ export default function Footer() {
 						<h4 className="mb-4 font-medium">Shop</h4>
 						<ul className="space-y-2 text-muted-foreground text-sm">
 							<li>
-								<Link
-									href="/collections/necklaces"
-									className="hover:text-primary"
-								>
+								<Link href="#" className="hover:text-primary">
 									Necklaces
 								</Link>
 							</li>
 							<li>
-								<Link
-									href="/collections/earrings"
-									className="hover:text-primary"
-								>
+								<Link href="#" className="hover:text-primary">
 									Earrings
 								</Link>
 							</li>
 							<li>
-								<Link href="/collections/rings" className="hover:text-primary">
+								<Link href="#" className="hover:text-primary">
 									Rings
 								</Link>
 							</li>
 							<li>
-								<Link
-									href="/collections/bracelets"
-									className="hover:text-primary"
-								>
+								<Link href="#" className="hover:text-primary">
 									Bracelets
 								</Link>
 							</li>
@@ -77,17 +68,17 @@ export default function Footer() {
 						<h4 className="mb-4 font-medium">Support</h4>
 						<ul className="space-y-2 text-muted-foreground text-sm">
 							<li>
-								<Link href="/contact" className="hover:text-primary">
+								<Link href="#" className="hover:text-primary">
 									Contact Us
 								</Link>
 							</li>
 							<li>
-								<Link href="/faq" className="hover:text-primary">
+								<Link href="#" className="hover:text-primary">
 									FAQs
 								</Link>
 							</li>
 							<li>
-								<Link href="/shipping" className="hover:text-primary">
+								<Link href="#" className="hover:text-primary">
 									Shipping & Returns
 								</Link>
 							</li>

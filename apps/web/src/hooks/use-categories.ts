@@ -95,14 +95,21 @@ export function useDeleteCategory() {
 export function useReorderCategories() {
 	const queryClient = useQueryClient();
 
-	return useMutation({
+	return useMutation<
+		{ message: string },
+		Error,
+		{ id: string; displayOrder: number }[],
+		{ previousCategories: Category[] | undefined }
+	>({
 		mutationFn: adminApiClient.reorderCategories.bind(adminApiClient),
 		onMutate: async (updates) => {
 			// Cancel outgoing refetches
 			await queryClient.cancelQueries({ queryKey: categoryKeys.lists() });
 
 			// Snapshot previous value
-			const previousCategories = queryClient.getQueryData(categoryKeys.lists());
+			const previousCategories = queryClient.getQueryData<Category[]>(
+				categoryKeys.lists(),
+			);
 
 			// Optimistically update
 			queryClient.setQueriesData<Category[]>(

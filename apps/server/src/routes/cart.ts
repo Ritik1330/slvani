@@ -51,12 +51,12 @@ async function populateCartWithProducts(cart: any) {
 			const coverImage =
 				typeof product?.coverImage === "string"
 					? product.coverImage
-					: product?.coverImage?.url || "";
+					: (product?.coverImage as any)?.url || "";
 
 			const category =
 				typeof product?.category === "string"
 					? product.category
-					: product?.category?.name || "";
+					: (product?.category as any)?.name || "";
 
 			return {
 				productId: item.productId,
